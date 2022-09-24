@@ -1,7 +1,7 @@
 import React from "react";
-
-function Dashboard() {
-  return <div>Dashboard</div>;
+import Dashboard from "../../components/superuser/Dashboard";
+function dashboard() {
+  return <Dashboard />;
 }
 
-export default Dashboard;
+export default dashboard;

@@ -1,7 +1,7 @@
 import React from "react";
-
+import Dashboard from "../../components/superuser/Dashboard";
 function index() {
-  return <div>superuser</div>;
+  return <Dashboard />;
 }
 
 export default index;

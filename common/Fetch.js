@@ -4,7 +4,7 @@ function Fetch(props) {
   return fetch(baseurl + props.route, {
     method: props.type,
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "multipart/form-data",
     },
     body: new URLSearchParams(props.body),
   })
