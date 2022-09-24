@@ -24,12 +24,7 @@ export default function AddVendorForm() {
     console.log("data", data);
     const formData = new FormData();
     for (const name in data) {
-      console.log("Adding ", name, data[name]);
       formData.append(name, data[name]);
-    }
-    console.log("Form data");
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
     }
     var response = await Fetch({
       route: "/addVendor",
@@ -52,10 +47,12 @@ export default function AddVendorForm() {
         Upload
         <input hidden multiple type="file" {...register("file")} />
       </Button>
-      <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
-      <Button onClick={() => reset()} variant={"outlined"}>
-        Reset
-      </Button>
+      <div>
+        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+        <Button onClick={() => reset()} variant={"outlined"}>
+          Reset
+        </Button>
+      </div>
     </form>
   );
 }

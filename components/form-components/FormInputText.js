@@ -8,7 +8,12 @@ export default function FormInputText({ name, control, label }) {
       name={name}
       control={control}
       render={({ field: { onChange, value } }) => (
-        <TextField onChange={onChange} value={value} label={label} />
+        <TextField
+          style={{ marginBottom: "6px", width: "100" }}
+          onChange={onChange}
+          value={value}
+          label={label}
+        />
       )}
     />
   );
