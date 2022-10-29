@@ -3,9 +3,10 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Header from "../Header";
 import React, { useEffect, useState } from "react";
+import  Cookies  from "js-cookie";
 import Fetch from "../../common/Fetch";
-
-function Login() {
+import axios from 'axios';
+function LoginSuperUser() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const onTextChange = (e) => setPassword(e.target.value);
@@ -14,13 +15,20 @@ function Login() {
     setMessage("");
     var data = await Fetch({
       route: "/superuser-login",
-      type: "POST",
-      body: {
-        password: password,
+      header: {
+        "Content-type": "application/json",
+        
       },
+      type: "POST",
+      body:JSON.stringify( {
+        password: password,
+      }),
     });
+  
     if (data.success) {
-      window.location.href = "/superuser";
+      localStorage.setItem("super user token",data.data);
+      Cookies.set("super user token",data.data);
+      window.location.href = "/superuser/dashboard";
     } else {
       setMessage(data.message);
     }
@@ -41,4 +49,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginSuperUser;
