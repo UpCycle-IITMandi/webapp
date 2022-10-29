@@ -8,7 +8,7 @@ import  Cookies  from "js-cookie";
 
 
 function Vendors() {
-  const [postLists,setPostList]=useState([]);
+  const [vendorLists,setVendorList]=useState([]);
   useEffect(() => {
     const getVendors=async()=>{
       var response = await Fetch({
@@ -20,7 +20,7 @@ function Vendors() {
              "/api/v1/bazaar/listVendors",
       });
       console.log(response.vendors);
-      setPostList(response.vendors);
+      setVendorList(response.vendors);
     }
       getVendors();
   },[]);
@@ -62,7 +62,7 @@ function Vendors() {
   ];
   return (
     <div className="row" style={{ padding: "10px" }}>
-      {postLists.map((i) => (
+      {vendorLists.map((i) => (
         <div className="col" key={i._id}>
           <Vendor data={i} />
         </div>

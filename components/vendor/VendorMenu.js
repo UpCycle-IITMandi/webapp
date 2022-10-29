@@ -18,7 +18,7 @@ function convertMapToRows(map) {
 
 function VendorMenu(props) {
 
-  const [postLists,setPostList]=useState([]);
+  const [vendorLists,setVendorList]=useState([]);
   const router = useRouter();
     const { vendorId } = router.query;
     console.log(vendorId);
@@ -37,7 +37,7 @@ function VendorMenu(props) {
           vendorId: vendorId,
         })
       });
-      setPostList(response.vendors);
+      setVendorList(response.vendors);
     }
     if(vendorId){ 
     getVendor();
@@ -155,12 +155,12 @@ function VendorMenu(props) {
 
   return (
     <div>
-      {postLists &&
-      <>  <p>{postLists.shopName}</p>
-      <p>{postLists.ownerName}</p>
-      <p>{postLists.upiId}</p>
-      <p>{postLists.address}</p>
-      <p>{postLists.message}</p>
+      {vendorLists &&
+      <>  <p>{vendorLists.shopName}</p>
+      <p>{vendorLists.ownerName}</p>
+      <p>{vendorLists.upiId}</p>
+      <p>{vendorLists.address}</p>
+      <p>{vendorLists.message}</p>
       </> 
       }
       <Box sx={{ width: "100%" }}>
