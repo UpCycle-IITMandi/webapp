@@ -1,15 +1,10 @@
+import React from "react";
 import { useRouter } from "next/router";
-import VendorMenu from "../../components/vendor/VendorMenu";
-const vendorPage = () => {
+import Vendor from "../../components/vendor";
+function vendor() {
   const router = useRouter();
   const { vendorId } = router.query;
+  return <Vendor vendorId={vendorId} />;
+}
 
-  return (
-    <div>
-      <p>VendorId: {vendorId}</p>
-      <VendorMenu />
-    </div>
-  );
-};
-
-export default vendorPage;
+export default vendor;

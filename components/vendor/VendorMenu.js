@@ -3,7 +3,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, Modal, Button, Stack } from "@mui/material";
 import Fetch from "../../common/Fetch";
 import useApiRef from "./subcomponents/ApiRef";
-import MenuImage from "./subcomponents/MenuImage";
 import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 

@@ -27,14 +27,6 @@ function Vendor(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // const [editing, setEditing] = React.useState(false);
-  // const [data, setData] = React.useState(props.data);
-  // const handleEditClick = () => setEditing(true);
-  // const handleUpdateClick = () => {
-  //   setEditing(false);
-  //   // Make API call to update the the
-  // };
-
   return (
     <div>
       <Card sx={{}}>
@@ -59,12 +51,6 @@ function Vendor(props) {
         </CardContent>
         <CardActions>
           <Button onClick={handleOpen}>Edit</Button>
-          {/* <Button
-            size="small"
-            onClick={editing ? handleUpdateClick : handleEditClick}
-          >
-            {editing ? "Update" : "Edit"}
-          </Button> */}
         </CardActions>
       </Card>
       <Modal
