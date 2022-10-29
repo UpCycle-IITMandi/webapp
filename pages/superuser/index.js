@@ -1,7 +1,11 @@
 import React from "react";
-import Dashboard from "../../components/superuser/Dashboard";
+import Cookies from "js-cookie"
 function index() {
-  return <Dashboard />;
+  Cookies.remove("super user token");
+  Cookies.remove("vendor token");
+  return <>
+  <h1>Home</h1>
+  </> 
 }
 
 export default index;

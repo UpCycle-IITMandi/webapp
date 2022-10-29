@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
+import { useLocation } from "react-router-dom";
 import {
   Box,
   Modal,
@@ -10,6 +11,7 @@ import {
 } from "@mui/material";
 import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import AddVendorForm from "./AddVendorForm";
+import { Link } from 'react-router-dom';
 
 const style = {
   position: "absolute",
@@ -38,7 +40,7 @@ function Vendor(props) {
           ))}
         </Carousel>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h5" component="div" >
             {props.data.shopName}
           </Typography>
           <Typography component={"span"} variant="body2" color="text.secondary">
@@ -47,6 +49,7 @@ function Vendor(props) {
             <p>{props.data.upiId}</p>
             <p>{props.data.address}</p>
             <p>{props.data.message}</p>
+           
           </Typography>
         </CardContent>
         <CardActions>

@@ -12,13 +12,14 @@ import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import FormInputText from "../../form-components/FormInputText";
 import Fetch from "../../../common/Fetch";
+import Cookies from "js-cookie"
 
 var defaultValues = {
   shopName: "",
   ownerName: "",
   upiId: "",
   address: "",
-  message: "",
+  contactNumber: "",
   password: "",
   images: [],
 };
@@ -30,7 +31,7 @@ export default function AddVendorForm(props) {
 
   const [data, setData] = useState(values);
   const [images, setImages] = useState([]);
-  const [message, setMessage] = useState("");
+  const [contactNumber, setcontactNumber] = useState("");
 
   const methods = useForm({ defaultValues: data });
   const { handleSubmit, reset, control, setValue, register } = methods;
@@ -40,7 +41,6 @@ export default function AddVendorForm(props) {
   }, [data.images]);
 
   const onSubmit = async (submitData) => {
-    setMessage("");
     const formData = new FormData();
     for (const name in submitData) {
       if (name !== "images") {
@@ -48,6 +48,7 @@ export default function AddVendorForm(props) {
         values[name] = submitData[name];
       }
     }
+  
     var fileList = submitData["images"];
     for (var i = 0; i < fileList.length; i++) {
       const file = fileList.item(i);
@@ -55,6 +56,9 @@ export default function AddVendorForm(props) {
     }
     values.images = images;
     var response = await Fetch({
+     header:{
+      Authorization: Cookies.get("super user token") ? Cookies.get("super user token") : "",
+     },
       route:
         props.method === "add"
           ? "/api/v1/bazaar/addVendor"
@@ -63,7 +67,6 @@ export default function AddVendorForm(props) {
       body: formData,
     });
     console.log(response);
-    setMessage(response.message);
     setData(values);
   };
 
@@ -82,7 +85,7 @@ export default function AddVendorForm(props) {
   return (
     <div>
       <form>
-        <Typography mt={2}>{message}</Typography>
+        <Typography mt={2}>{contactNumber}</Typography>
         <FormInputText
           name={"shopName"}
           control={control}
@@ -95,7 +98,7 @@ export default function AddVendorForm(props) {
         />
         <FormInputText name={"upiId"} control={control} label={"UPI Id"} />
         <FormInputText name={"address"} control={control} label={"Address"} />
-        <FormInputText name={"message"} control={control} label={"Message"} />
+        <FormInputText name={"contactNumber"} control={control} label={"contactNumber"} />
         <FormInputText name={"password"} control={control} label={"Password"} />
         <div>
           <Button
