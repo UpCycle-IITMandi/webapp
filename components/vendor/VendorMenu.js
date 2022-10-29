@@ -6,7 +6,8 @@ import useApiRef from "./subcomponents/ApiRef";
 import MenuImage from "./subcomponents/MenuImage";
 import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 function convertMapToRows(map) {
   var rows = [];
   map.forEach((value, key) => {
@@ -15,7 +16,33 @@ function convertMapToRows(map) {
   return rows;
 }
 
-function VendorMenu() {
+function VendorMenu(props) {
+
+  const [vendorLists,setVendorList]=useState([]);
+  const router = useRouter();
+    const { vendorId } = router.query;
+    console.log(vendorId);
+  useEffect(() => {  
+   
+    const getVendor=async()=>{
+      var response = await Fetch({
+        route:
+            "/api/v1/bazaar/getVendorData",
+        type:"POST",
+        header:{
+           "Content-type": "application/json",
+           Authorization: Cookies.get("vendor token") ? Cookies.get("vendor token") : "",
+        },
+        body:JSON.stringify({
+          vendorId: vendorId,
+        })
+      });
+      setVendorList(response.vendors);
+    }
+    if(vendorId){ 
+    getVendor();
+    }
+  },[vendorId]);
   var cols = [
     { field: "name", headerName: "Dish Name", width: 150, editable: true },
     { field: "price", headerName: "Dish Price", width: 150, editable: true },
@@ -128,6 +155,14 @@ function VendorMenu() {
 
   return (
     <div>
+      {vendorLists &&
+      <>  <p>{vendorLists.shopName}</p>
+      <p>{vendorLists.ownerName}</p>
+      <p>{vendorLists.upiId}</p>
+      <p>{vendorLists.address}</p>
+      <p>{vendorLists.message}</p>
+      </> 
+      }
       <Box sx={{ width: "100%" }}>
         <DataGrid
           autoHeight

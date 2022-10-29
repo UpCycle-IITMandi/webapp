@@ -4,8 +4,10 @@ import Typography from "@mui/material/Typography";
 import Header from "../Header";
 import React, { useEffect, useState } from "react";
 import Fetch from "../../common/Fetch";
+import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 
-function Login() {
+function LoginVendor() {
   const [password, setPassword] = useState("");
   const [vendorId, setVendorId] = useState("");
   const [message, setMessage] = useState("");
@@ -20,13 +22,17 @@ function Login() {
     var data = await Fetch({
       route: "/vendor-login",
       type: "POST",
-      body: {
+      header:{
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
         vendorId: vendorId,
         password: password,
-      },
+      }),
     });
     if (data.success) {
-      window.location.href = "/vendor/" + vendorId;
+      Cookie.set("vendor token",data.data);
+      window.location.href = "/vendor/"+data.name ;
     } else {
       setMessage(data.message);
     }
@@ -54,4 +60,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginVendor;

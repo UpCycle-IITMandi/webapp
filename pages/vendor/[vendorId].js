@@ -7,7 +7,7 @@ const vendorPage = () => {
   return (
     <div>
       <p>VendorId: {vendorId}</p>
-      <VendorMenu />
+      <VendorMenu/>
     </div>
   );
 };
