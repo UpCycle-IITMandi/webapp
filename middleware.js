@@ -9,10 +9,13 @@ export default function middleware(req){
     if(!superUserToken&&url.includes('/superuser/dashboard')){
         return NextResponse.redirect("http://localhost:3001/superuser/login");
     }
-    if(url.includes("/vendor/login")){
+    if(url.includes("/vendor")){
 
     }
-    else if(!vendorToken&&url.includes('vendor')){
+    else if(url.includes("/vendor/login")){
+
+    }
+    else if(!vendorToken&&url.includes('/vendor/')){
         return NextResponse.redirect("http://localhost:3001/vendor/login");
     }
     

@@ -7,6 +7,7 @@ import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+
 function convertMapToRows(map) {
   var rows = [];
   map.forEach((value, key) => {
@@ -18,15 +19,15 @@ function convertMapToRows(map) {
 function VendorMenu(props) {
 
   const [vendorLists,setVendorList]=useState([]);
-  const router = useRouter();
-    const { vendorId } = router.query;
-    console.log(vendorId);
+  const Router = useRouter();
+    const { vendorId } = Router.query;
+
   useEffect(() => {  
    
     const getVendor=async()=>{
       var response = await Fetch({
         route:
-            "/api/v1/bazaar/getVendorData",
+            "/api/v1/vendor/getOne",
         type:"POST",
         header:{
            "Content-type": "application/json",
@@ -36,12 +37,17 @@ function VendorMenu(props) {
           vendorId: vendorId,
         })
       });
+      if(!response.success){
+        Router.push("/vendor");
+      }
+      console.log(response.vendors);
       setVendorList(response.vendors);
     }
     if(vendorId){ 
     getVendor();
     }
   },[vendorId]);
+  
   var cols = [
     { field: "name", headerName: "Dish Name", width: 150, editable: true },
     { field: "price", headerName: "Dish Price", width: 150, editable: true },

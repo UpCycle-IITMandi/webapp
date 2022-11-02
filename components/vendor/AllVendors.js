@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Box, Typography, Button, TextField } from "@mui/material";
 
-import Header from "../../Header";
-import Fetch from "../../../common/Fetch";
+import Fetch from "../../common/Fetch";
 import Vendor from "./Vendor";
 import  Cookies  from "js-cookie";
 
@@ -28,7 +27,6 @@ function Vendors() {
     <div className="row" style={{ padding: "10px" }}>
       {vendorLists.map((i) => (
         <div className="col" key={i._id}>
-          {console.log(i)}
           <Vendor data={i} />
         </div>
       ))}
