@@ -5,8 +5,9 @@ import Header from "../Header";
 import React, { useEffect, useState } from "react";
 import  Cookies  from "js-cookie";
 import Fetch from "../../common/Fetch";
-import axios from 'axios';
+import { useRouter } from "next/router";
 function LoginSuperUser() {
+  const Router=useRouter();
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const onTextChange = (e) => setPassword(e.target.value);
@@ -28,7 +29,8 @@ function LoginSuperUser() {
     if (data.success) {
       localStorage.setItem("super user token",data.data);
       Cookies.set("super user token",data.data);
-      window.location.href = "/superuser/dashboard";
+      Router.push("/superuser/dashboard");
+      
     } else {
       setMessage(data.message);
     }

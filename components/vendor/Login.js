@@ -6,8 +6,10 @@ import React, { useEffect, useState } from "react";
 import Fetch from "../../common/Fetch";
 import Cookie from "js-cookie";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 function LoginVendor() {
+  const Router=useRouter();
   const [password, setPassword] = useState("");
   const [vendorId, setVendorId] = useState("");
   const [message, setMessage] = useState("");
@@ -32,7 +34,9 @@ function LoginVendor() {
     });
     if (data.success) {
       Cookie.set("vendor token",data.data);
-      window.location.href = "/vendor/"+data.name ;
+      Router.push({
+        pathname:"/vendor/"+data.vendorId ,
+      })
     } else {
       setMessage(data.message);
     }

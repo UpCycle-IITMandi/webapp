@@ -10,8 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
-import AddVendorForm from "./AddVendorForm";
-import { Link } from 'react-router-dom';
+import { useRouter } from "next/router";
 
 const style = {
   position: "absolute",
@@ -26,9 +25,12 @@ const style = {
 };
 
 function Vendor(props) {
+    const Router=useRouter();
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    console.log(props.data.vendorId);
+    Router.push("/vendor/"+props.data.vendorId);
+  };
   return (
     <div>
       <Card sx={{}}>
@@ -54,19 +56,9 @@ function Vendor(props) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button onClick={handleOpen}>Edit</Button>
+          <Button onClick={handleOpen}>Open</Button>
         </CardActions>
       </Card>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <AddVendorForm data={props.data} />
-        </Box>
-      </Modal>
     </div>
   );
 }
