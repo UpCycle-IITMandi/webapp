@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Modal, Button, Stack } from "@mui/material";
-import Fetch from "../../common/Fetch";
 import useApiRef from "./subcomponents/ApiRef";
 import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-
 function convertMapToRows(map) {
   var rows = [];
   map.forEach((value, key) => {
@@ -20,33 +17,7 @@ function VendorMenu(props) {
 
   const [vendorLists,setVendorList]=useState([]);
   const Router = useRouter();
-    const { vendorId } = Router.query;
 
-  useEffect(() => {  
-   
-    const getVendor=async()=>{
-      var response = await Fetch({
-        route:
-            "/api/v1/vendor/getOne",
-        type:"POST",
-        header:{
-           "Content-type": "application/json",
-           Authorization: Cookies.get("vendor token") ? Cookies.get("vendor token") : "",
-        },
-        body:JSON.stringify({
-          vendorId: vendorId,
-        })
-      });
-      if(!response.success){
-        Router.push("/vendor");
-      }
-      console.log(response.vendors);
-      setVendorList(response.vendors);
-    }
-    if(vendorId){ 
-    getVendor();
-    }
-  },[vendorId]);
   
   var cols = [
     { field: "name", headerName: "Dish Name", width: 150, editable: true },
@@ -159,13 +130,14 @@ function VendorMenu(props) {
   };
 
   return (
+    <> 
     <div>
-      {vendorLists &&
-      <>  <p>{vendorLists.shopName}</p>
-      <p>{vendorLists.ownerName}</p>
-      <p>{vendorLists.upiId}</p>
-      <p>{vendorLists.address}</p>
-      <p>{vendorLists.message}</p>
+      {props.data &&
+      <>  <p>{props.data.shopName}</p>
+      <p>{props.data.ownerName}</p>
+      <p>{props.data.upiId}</p>
+      <p>{props.data.address}</p>
+      <p>{props.data.message}</p>
       </> 
       }
       <Box sx={{ width: "100%" }}>
@@ -187,6 +159,7 @@ function VendorMenu(props) {
         </Button>
       </div>
     </div>
+    </>
   );
 }
 

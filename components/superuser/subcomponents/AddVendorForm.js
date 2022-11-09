@@ -13,7 +13,7 @@ import { Controller, useForm } from "react-hook-form";
 import FormInputText from "../../form-components/FormInputText";
 import Fetch from "../../../common/Fetch";
 import Cookies from "js-cookie"
-
+import { useRouter } from "next/router";
 var defaultValues = {
   shopName: "",
   ownerName: "",
@@ -26,6 +26,7 @@ var defaultValues = {
 
 export default function AddVendorForm(props) {
   var values;
+  const Router=useRouter();
   if (props.method === "add") values = defaultValues;
   else values = props.data;
 
@@ -50,6 +51,7 @@ export default function AddVendorForm(props) {
     }
   
     var fileList = submitData["images"];
+    console.log(fileList);
     for (var i = 0; i < fileList.length; i++) {
       const file = fileList.item(i);
       formData.append("images", file, file.name);
@@ -61,11 +63,12 @@ export default function AddVendorForm(props) {
      },
       route:
         props.method === "add"
-          ? "/api/v1/bazaar/addVendor"
-          : "/api/v1/bazaar/updateVendor",
+          ? "/api/v1/vendor/add"
+          : "/api/v1/vendor/update",
       type: "POST",
       body: formData,
     });
+    window.location.href=("/superuser/dashboard");
     console.log(response);
     setData(values);
   };

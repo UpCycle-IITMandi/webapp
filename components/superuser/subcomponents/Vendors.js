@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Box, Typography, Button, TextField } from "@mui/material";
+import { Modal, Box, Typography, Button, TextField,Grid } from "@mui/material";
 
 import Header from "../../Header";
 import Fetch from "../../../common/Fetch";
@@ -25,14 +25,15 @@ function Vendors() {
       getVendors();
   },[]);
   return (
-    <div className="row" style={{ padding: "10px" }}>
-      {vendorLists.map((i) => (
-        <div className="col" key={i._id}>
-          {console.log(i)}
-          <Vendor data={i} />
-        </div>
+    <Box sx={{ flexGrow: 1 }}>
+    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+      {vendorLists.map((i)  => (
+        <Grid item xs={2} sm={4} md={3} key={i._id}>
+          <Vendor data={i}></Vendor>
+        </Grid>
       ))}
-    </div>
+    </Grid>
+  </Box>
   );
 }
 

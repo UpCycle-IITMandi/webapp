@@ -1,33 +1,34 @@
 import React from "react";
-import Cookies from "js-cookie"
-import { Button} from "@mui/material";
+import Cookies from "js-cookie";
+import { Button } from "@mui/material";
 import { useRouter } from "next/router";
+import Vendors from "../../components/vendor/AllVendors";
+import Header from "../../components/Header";
 function index() {
-  const Router=useRouter();
+  const Router = useRouter();
   Cookies.remove("super user token");
   Cookies.remove("vendor token");
-  function handleSuperUserSubmit(){
+  function handleSuperUserSubmit() {
     Router.push({
-      pathname:"/superuser/login",
-    }
-  )
+      pathname: "/superuser/login",
+    });
   }
-  function handleVendorSubmit(){
+  function handleVendorSubmit() {
     Router.push({
-      pathname:"/vendor",
-    })
+      pathname: "/vendor",
+    });
   }
-  return <>
-  <h1>Home</h1>
-  <div >
-  <Button variant="contained" onClick={handleSuperUserSubmit}>
-        Super user login
-    </Button>
-    <Button variant="contained" onClick={handleVendorSubmit}>
-        vendor
-    </Button>
-    </div>
-  </> 
+  return (
+    <>
+      <div>
+        <Header></Header>
+        <br />
+        <div>
+          <Vendors></Vendors>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default index;

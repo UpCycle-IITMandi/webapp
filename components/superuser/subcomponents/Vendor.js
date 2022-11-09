@@ -35,16 +35,15 @@ function Vendor(props) {
         <Carousel>
           {props.data.images.map((item, i) => (
             <Paper key={i}>
-              
-              <CardMedia component="img" height="280" image={item.pictureUrl} />
+              <CardMedia component="img" height="200" image={item.pictureUrl} />
             </Paper>
           ))}
         </Carousel>
-        <CardContent>
+        <CardContent >
           <Typography gutterBottom variant="h5" component="div" >
             {props.data.shopName}
           </Typography>
-          <Typography component={"span"} variant="body2" color="text.secondary">
+          <Typography component={"span"} variant="body2" color="text.secondary" lineHeight={"1.1"} >
             <p>{props.data.shopName}</p>
             <p>{props.data.ownerName}</p>
             <p>{props.data.upiId}</p>
@@ -53,7 +52,7 @@ function Vendor(props) {
            
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions textAlign={"center"}>
           <Button onClick={handleOpen}>Edit</Button>
         </CardActions>
       </Card>

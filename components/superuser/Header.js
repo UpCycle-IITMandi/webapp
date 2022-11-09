@@ -8,21 +8,21 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
-import HomeIcon from '@mui/icons-material/Home';
 import { useRouter } from "next/router";
+import HomeIcon from '@mui/icons-material/Home';
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Header(props) {
   const Router = useRouter();
 
-  function handleSuperUserSubmit() {
+  function handleAddVendorsSubmit() {
     Router.push({
-      pathname: "/superuser/login",
+      pathname: "/superuser/dashboard",
     });
   }
-  function handleVendorSubmit() {
+  function handleLogoutSubmit() {
     Router.push({
-      pathname: "/vendor/login",
+      pathname: "/",
     });
   }
   function handleLandingSubmit() {
@@ -65,14 +65,12 @@ function Header(props) {
             >
               <HomeIcon />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} cursor={"pointer"}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}  >
               Village Square
             </Typography>
-            <Button color="inherit" onClick={handleSuperUserSubmit}>
-              Super User Login
-            </Button>
-            <Button color="inherit" onClick={handleVendorSubmit}>
-              Vendor Login
+
+            <Button color="inherit" onClick={handleLogoutSubmit}>
+              Logout
             </Button>
           </Toolbar>
         </AppBar>

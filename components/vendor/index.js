@@ -3,14 +3,43 @@ import React, { useEffect, useState } from "react";
 import VendorMenu from "../vendor/VendorMenu";
 import EditVendor from "../vendor/EditVendor";
 import Orders from "../vendor/Orders";
-
-const vendorPage = ({ vendorId = null }) => {
+import { useRouter } from "next/router";
+import Fetch from "../../common/Fetch";
+import Cookies from "js-cookie";
+import Header from "../superuser/Header";
+const vendorPage = () => {
+  const Router=useRouter();
+  const [Loading,setLoading]=useState(false);
   const [vendorData, setVendorData] = useState({});
 
-  useEffect(() => {
-    // api call to fetch vendor data from database
-    setVendorData({});
-  }, []);
+  const { vendorId } = Router.query;
+  useEffect(() => {  
+   
+    const getVendor=async()=>{
+      var response = await Fetch({
+        route:
+            "/api/v1/vendor/getOne",
+        type:"POST",
+        header:{
+           "Content-type": "application/json",
+           Authorization: Cookies.get("vendor token") ? Cookies.get("vendor token") : "",
+        },
+        body:JSON.stringify({
+          vendorId: vendorId,
+        })
+      });
+      if(!response.success){
+        Router.push("/vendor/"+vendorId+"/login");
+      }
+      else{
+      setLoading(true);
+      setVendorData(response.vendors);
+      }
+    }
+    if(vendorId){ 
+    getVendor();
+    }
+  },[vendorId]);
 
   var orders = [
     {
@@ -33,6 +62,10 @@ const vendorPage = ({ vendorId = null }) => {
     },
   ];
   return (
+    <> 
+    {Loading&&
+    <>
+    <Header></Header>
     <div>
       <div>
         <p>VendorId: {vendorId}</p>
@@ -40,13 +73,16 @@ const vendorPage = ({ vendorId = null }) => {
       </div>
       <Grid container spacing={2}>
         <Grid item xs={9}>
-          <VendorMenu />
+          <VendorMenu data={vendorData}/>
         </Grid>
         <Grid item xs={3}>
           <Orders orders={orders} />
         </Grid>
       </Grid>
     </div>
+    </>
+  }
+    </>
   );
 };
 
