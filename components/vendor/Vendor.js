@@ -25,11 +25,11 @@ const style = {
 };
 
 function Vendor(props) {
-    const Router=useRouter();
+  const Router = useRouter();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     console.log(props.data.vendorId);
-    Router.push("/vendor/"+props.data.vendorId);
+    Router.push("/vendor/" + props.data.vendorId);
   };
   return (
     <div>
@@ -37,26 +37,29 @@ function Vendor(props) {
         <Carousel>
           {props.data.images.map((item, i) => (
             <Paper key={i}>
-              
-              <CardMedia component="img" height="280" image={item.pictureUrl} />
+              <CardMedia component="img" height="200" image={item.pictureUrl} />
             </Paper>
           ))}
         </Carousel>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div" >
+        <CardContent sx={{ height: "35vh" }}>
+          <Typography gutterBottom variant="h5" component="div"   >
             {props.data.shopName}
           </Typography>
-          <Typography component={"span"} variant="body2" color="text.secondary">
+          <Typography
+            component={"span"}
+            variant="body2"
+            color="text.secondary"
+            lineHeight={"1.1"}
+          >
             <p>{props.data.shopName}</p>
             <p>{props.data.ownerName}</p>
             <p>{props.data.upiId}</p>
             <p>{props.data.address}</p>
             <p>{props.data.message}</p>
-           
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button onClick={handleOpen}>Open</Button>
+        <CardActions >
+          <Button sx={{ "margin-left": "auto", "margin-right": "auto" }}  onClick={handleOpen}>Open</Button>
         </CardActions>
       </Card>
     </div>

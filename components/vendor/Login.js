@@ -1,30 +1,30 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import {Alert} from "@mui/material";
 import Header from "../Header";
 import React, { useEffect, useState } from "react";
 import Fetch from "../../common/Fetch";
-import Cookie from "js-cookie";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-
-function LoginVendor() {
-  const Router=useRouter();
+import {
+  Grid,
+  Paper,
+  Link,
+} from "@mui/material";
+function Login(props) {
+  const router = useRouter();
+  const { vendorId } = router.query;
   const [password, setPassword] = useState("");
-  const [vendorId, setVendorId] = useState("");
   const [message, setMessage] = useState("");
-  const onTextChange = (field) => {
-    return field === "password"
-      ? (e) => setPassword(e.target.value)
-      : (e) => setVendorId(e.target.value);
-  };
+  const onTextChange = (e) => setPassword(e.target.value);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
     var data = await Fetch({
       route: "/vendor-login",
       type: "POST",
-      header:{
+      header: {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
@@ -32,36 +32,51 @@ function LoginVendor() {
         password: password,
       }),
     });
+    console.log(data);
     if (data.success) {
-      Cookie.set("vendor token",data.data);
-      Router.push({
-        pathname:"/vendor/"+data.vendorId ,
-      })
+      Cookies.set("vendor token", data.data);
+      router.push({
+        pathname: "/vendor/" + data.vendorId,
+      });
     } else {
-      setMessage(data.message);
+       setMessage("invalid password");
     }
   };
+  const paperStyle = {
+    padding: 20,
+    height: "40vh",
+    width: 280,
+    margin: "60px auto",
+  };
+  const btnstyle = { margin: "8px 0" };
   return (
-    <div>
-      <Header title="Vendor Login" />
-      <Typography mt={2}>{message}</Typography>
-      <div>
-        <TextField
-          onChange={onTextChange("vendorId")}
-          value={vendorId}
-          label={"Enter Vendor Id"}
-        />
-        <TextField
-          onChange={onTextChange("password")}
-          value={password}
-          label={"Enter password"}
-        />
-      </div>
-      <Button variant="contained" onClick={handleSubmit}>
-        Submit
-      </Button>
-    </div>
+    <>
+    <Header></Header>
+      <Grid>
+      {message&&<Alert severity="error">{message}</Alert>}
+        <Paper elevation={10} style={paperStyle}>
+          <TextField
+            onChange={onTextChange}
+            label="Password"
+            type="password"
+            fullWidth
+          />
+          <br></br>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            onClick={handleSubmit}
+            style={btnstyle}
+            fullWidth
+          >
+            Sign in
+          </Button>
+          <Link>Forgot password ?</Link>
+        </Paper>
+      </Grid>
+    </>
   );
 }
 
-export default LoginVendor;
+export default Login;
