@@ -1,18 +1,18 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import AddVendorModal from "./subcomponents/AddVendorModal";
-import Vendors from "./subcomponents/Vendors";
+import AddVendorModal from "../common/AddVendorModal";
+import Vendors from "../common/Vendors";
 import Header from "./Header";
 import React, { useEffect, useState } from "react";
-import Fetch from "../../common/Fetch";
 
 function Dashboard() {
+  const [state, setState] = React.useState(0);
+  const updateDashboard = (...anything) => {
+    setState(state + 1);
+  };
   return (
     <div>
       <Header title="Superuser Dashboard" />
-      <AddVendorModal />
-      <Vendors />
+      <AddVendorModal updateFunction={updateDashboard} />
+      <Vendors isEditable={true} />;
     </div>
   );
 }
