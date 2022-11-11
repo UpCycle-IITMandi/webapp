@@ -5,9 +5,10 @@ import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import { useRouter } from "next/router";
 import style from "../../styles/modalStyle.json";
 import AddEditVendorForm from "./AddEditVendorForm";
+import _ from "lodash";
 
-function VendorCard({ data, isEditable, updateFunction }) {
-  console.log("Rendering vendor card", data.shopName);
+function VendorCard({ data, isEditable, updateFunction, openAsVendor = true }) {
+  if (_.isEmpty(data)) return <></>;
   const Router = useRouter();
   const [openModal, setOpenModal] = React.useState(false);
 
@@ -40,9 +41,11 @@ function VendorCard({ data, isEditable, updateFunction }) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button sx={{ "margin-left": "auto", "margin-right": "auto" }} onClick={handleOpenPage}>
-            Open as Vendor
-          </Button>
+          {openAsVendor ? (
+            <Button sx={{ "margin-left": "auto", "margin-right": "auto" }} onClick={handleOpenPage}>
+              Open as Vendor
+            </Button>
+          ) : null}
           {isEditable ? <Button onClick={handleOpenModal}>Edit</Button> : null}
         </CardActions>
       </Card>
