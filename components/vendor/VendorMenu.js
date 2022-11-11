@@ -17,7 +17,7 @@ function VendorMenu(props) {
 
   const [vendorLists,setVendorList]=useState([]);
   const Router = useRouter();
-
+  console.log("Vendor menu props ", props);
   
   var cols = [
     { field: "name", headerName: "Dish Name", width: 150, editable: true },
