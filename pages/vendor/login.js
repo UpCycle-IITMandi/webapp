@@ -1,7 +1,7 @@
 import React from "react";
-import LoginwithId from "../../components/vendor/LoginwithId";
+import Login from "../../components/vendor/Login";
 function login() {
-  return <LoginwithId />;
+  return <Login/>;
 }
 
 export default login;

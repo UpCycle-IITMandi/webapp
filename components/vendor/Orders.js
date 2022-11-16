@@ -14,13 +14,18 @@ import OrderCard from "./subcomponents/OrderCard";
 
 function Orders(props) {
   return (
-    <Grid container spacing={2}>
-      {props.orders.map((order, i) => (
-        <Grid item xs={12}>
+
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 9 }}>
+         {props.orders.map((order, i) => (
+         <Grid item xs={2} sm={4} md={3} key={i._id}>
           <OrderCard order={order} />
         </Grid>
       ))}
-    </Grid>
+      </Grid>
+    </Box>
+    
+
   );
 }
 

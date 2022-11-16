@@ -23,8 +23,8 @@ function Vendors({ isEditable = false }) {
   }, []);
 
   const updateVendors = (vendor) => {
-    let _vendors = JSON.parse(JSON.stringify(vendors));
-    const i = _vendors.findIndex((_vendor) => _vendor._id === vendor._id);
+    let _vendors = JSON.parse(JSON.stringify(vendor));
+    const i = _vendors.findIndex((_vendors) => _vendors._id === vendor._id);
     if (i > -1) _vendors[i] = vendor;
     else _vendors.push(vendor);
     setVendors(_vendors);

@@ -3,14 +3,14 @@ import Cookies from "js-cookie";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import Vendors from "../components/common/Vendors";
-import Header from "../components/Header";
+import Header from "../components/common/Header";
 
 function root() {
   const Router = useRouter();
   return (
     <>
       <div>
-        <Header />
+        <Header/>
         <br />
         <div>
           <Vendors />
