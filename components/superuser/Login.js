@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Grid,Paper,Link,Alert } from "@mui/material";
-import Header from "../Header";
+import Header from "../common/Header";
 import React, { useEffect, useState } from "react";
 import  Cookies  from "js-cookie";
 import Fetch from "../../common/Fetch";
@@ -39,7 +39,7 @@ function LoginSuperUser() {
   };
   const paperStyle = {
     padding: 20,
-    height: "40vh",
+    height: "auto",
     width: 280,
     margin: "60px auto",
   };

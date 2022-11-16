@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import {Alert} from "@mui/material";
-import Header from "../Header";
+import Header from "../common/Header";
 import React, { useEffect, useState } from "react";
 import Fetch from "../../common/Fetch";
 import Cookies from "js-cookie";
@@ -14,10 +14,20 @@ import {
 } from "@mui/material";
 function Login(props) {
   const router = useRouter();
-  const { vendorId } = router.query;
+  const [vendorId,setVendorId]=useState(null);
+  const [isIdRequired,setIdRequired]=useState(true);
+  useEffect(()=>{ 
+
+    if(props.vendorId){
+      setVendorId(props.vendorId);
+      console.log(props.vendorId);
+      setIdRequired(false);
+    }
+  },[props]);
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const onTextChange = (e) => setPassword(e.target.value);
+  const onTextChangePassword = (e) => setPassword(e.target.value);
+  const onTextChangeVendor = (e) => setVendorId(e.target.value);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -32,8 +42,8 @@ function Login(props) {
         password: password,
       }),
     });
-    console.log(data);
     if (data.success) {
+      localStorage.setItem("vendor token",data.data);
       Cookies.set("vendor token", data.data);
       router.push({
         pathname: "/vendor/" + data.vendorId,
@@ -44,7 +54,7 @@ function Login(props) {
   };
   const paperStyle = {
     padding: 20,
-    height: "40vh",
+    height: "auto",
     width: 280,
     margin: "60px auto",
   };
@@ -55,8 +65,17 @@ function Login(props) {
       <Grid>
       {message&&<Alert severity="error">{message}</Alert>}
         <Paper elevation={10} style={paperStyle}>
+        {isIdRequired&&(<> <TextField
+           onChange={onTextChangeVendor}
+            label="Vendor Id"
+            fullWidth
+          />
+          <br></br>
+          <br></br>
+          </>
+        )}
           <TextField
-            onChange={onTextChange}
+            onChange={onTextChangePassword}
             label="Password"
             type="password"
             fullWidth

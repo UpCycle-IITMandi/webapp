@@ -1,6 +1,6 @@
 import AddVendorModal from "../common/AddVendorModal";
 import Vendors from "../common/Vendors";
-import Header from "./Header";
+import Header from "../common/Header";
 import React, { useEffect, useState } from "react";
 
 function Dashboard() {

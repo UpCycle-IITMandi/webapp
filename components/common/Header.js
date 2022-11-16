@@ -10,6 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import HomeIcon from '@mui/icons-material/Home';
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Header(props) {
@@ -18,6 +19,15 @@ function Header(props) {
   function handleSuperUserSubmit() {
     Router.push({
       pathname: "/superuser/login",
+    });
+  }
+  function handleLogoutSubmit() {
+    Cookies.remove("vendor token");
+    Cookies.remove("super user token");
+    localStorage.removeItem("vendor token");
+    localStorage.removeItem("super user token");
+    Router.push({
+      pathname: "/",
     });
   }
   function handleVendorSubmit() {
@@ -34,7 +44,7 @@ function Header(props) {
   return (
     <>
       <Head>
-        <title>{props.title ? props.title : "Default title"}</title>
+        <title>{props.title ? props.title : "Village Square"}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link rel="stylesheet" href="/css/index.css" />
         <link
@@ -68,12 +78,18 @@ function Header(props) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} cursor={"pointer"}>
               Village Square
             </Typography>
-            <Button color="inherit" onClick={handleSuperUserSubmit}>
+            {(!props.title)&&(<> <Button color="inherit" onClick={handleSuperUserSubmit}>
               Super User Login
             </Button>
             <Button color="inherit" onClick={handleVendorSubmit}>
               Vendor Login
             </Button>
+            </>)}
+            {props.title&&( 
+            <Button color="inherit" onClick={handleLogoutSubmit}>
+              Logout
+            </Button>
+            )}
           </Toolbar>
         </AppBar>
       </Box>

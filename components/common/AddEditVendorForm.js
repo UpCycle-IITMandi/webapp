@@ -36,6 +36,8 @@ export default function AddEditVendorForm({ method = "add", data = defaultValues
     if (fileList.length > 0 && fileList[0].lastModified) {
       for (var i = 0; i < fileList.length; i++) {
         const file = fileList.item(i);
+        console.log("here");
+        console.log(file,file.name);
         formData.append("images", file, file.name);
       }
     }
