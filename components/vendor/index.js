@@ -51,6 +51,7 @@ const vendorPage = () => {
   const Router = useRouter();
   const [Loading, setLoading] = useState(false);
   const [vendorData, setVendorData] = useState({});
+  const [orders, setOrders] = useState([]);
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -85,35 +86,37 @@ const vendorPage = () => {
         setVendorData(response.vendors);
       }
     };
+    const getOrders = async () => {
+      var response = await Fetch({
+        route: "/api/v1/order/getVendorOrders",
+        type: "POST",
+        header: {
+          "Content-type": "application/json",
+          Authorization: Cookies.get("vendor token")
+            ? Cookies.get("vendor token")
+            : "",
+        },
+        body: JSON.stringify({
+          vendorId: vendorId,
+        }),
+      });
+      if (!response.success) {
+        Router.push("/vendor/" + vendorId + "/login");
+      } else {
+        setLoading(true);
+        console.log(response.orders);
+        setOrders(response.orders);
+      }
+    };
     if (vendorId) {
       getVendor();
+      getOrders();
     }
   }, [vendorId]);
 
   const updateVendor = (vendor) => {
     setVendorData(vendor);
   };
-
-  var orders = [
-    {
-      id: "order-id-1",
-      items: [
-        { name: "Butter chicken", quantity: 2 },
-        { name: "Chicken Tikka", quantity: 3 },
-      ],
-      address: "Room no 125, B9, North Campus",
-      cost: 545,
-    },
-    {
-      id: "order-id-2",
-      items: [
-        { name: "Veg biryani", quantity: 2 },
-        { name: "Crispy veg", quantity: 3 },
-      ],
-      address: "Room no 123, B11, South Campus",
-      cost: 340,
-    },
-  ];
   return (
     <>
       {Loading && (
@@ -139,19 +142,17 @@ const vendorPage = () => {
               onChangeIndex={handleChangeIndex}
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
-                <Grid container spacing={2}>
-                  <Grid item xs={9}>
+              
                     <Orders orders={orders} />
-                  </Grid>
-                  <Grid item xs={3}>
+                  {/* <Grid item xs={3}>
                     <VendorCard
                       data={vendorData}
                       isEditable={true}
                       updateFunction={updateVendor}
                       openAsVendor={false}
                     />
-                  </Grid>
-                </Grid>
+                  </Grid> */}
+              
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
                 <VendorMenu data={vendorData} />

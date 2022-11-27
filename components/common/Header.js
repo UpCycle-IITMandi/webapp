@@ -10,12 +10,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import HomeIcon from '@mui/icons-material/Home';
 import { useRouter } from "next/router";
+import AddVendorModal from "./AddVendorModal";
 import Cookies from "js-cookie";
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Header(props) {
   const Router = useRouter();
-
+  const [state, setState] = React.useState(0);
+  const updateDashboard = (...anything) => {
+    setState(state + 1);
+  };
   function handleSuperUserSubmit() {
     Router.push({
       pathname: "/superuser/login",
@@ -62,7 +64,7 @@ function Header(props) {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </Head>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1}}>
         <AppBar position="static">
           <Toolbar>
             <IconButton
@@ -79,16 +81,19 @@ function Header(props) {
               Village Square
             </Typography>
             {(!props.title)&&(<> <Button color="inherit" onClick={handleSuperUserSubmit}>
-              Super User Login
+              Superuser Login
             </Button>
             <Button color="inherit" onClick={handleVendorSubmit}>
               Vendor Login
             </Button>
             </>)}
             {props.title&&( 
+              <>
+              {props.title!=="Vendor Page" &&<AddVendorModal updateFunction={updateDashboard} />}
             <Button color="inherit" onClick={handleLogoutSubmit}>
               Logout
             </Button>
+            </>
             )}
           </Toolbar>
         </AppBar>
