@@ -11,9 +11,15 @@ import PropTypes from "prop-types";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import IconButton from "@mui/material/IconButton";
+import { Switch, Dialog, DialogActions } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
+import Varient from "./subcomponents/Variant";
+import Slide from "@mui/material/Slide";
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 function convertMapToRows(map) {
   var rows = [];
   map.forEach((value, key) => {
@@ -26,8 +32,10 @@ function VendorMenu(props) {
   const [menuImage, setMenuImage] = useState([]);
   const [vendorId, setVendorId] = useState("");
   const [menuMessage, setMenuMessage] = useState("");
-  const [open, setOpen] = useState(false);
+  const[open,setOpen]=useState(false);
+  const [openForVarient, setOpenVarient] = useState(false);
   const btnstyle = { margin: "8px 0" };
+  const [variant,setVariantValues]=useState({});
   function isOverflown(element) {
     return (
       element.scrollHeight > element.clientHeight ||
@@ -43,7 +51,6 @@ function VendorMenu(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [showFullCell, setShowFullCell] = React.useState(false);
     const [showPopper, setShowPopper] = React.useState(false);
-
     const handleMouseEnter = () => {
       const isCurrentlyOverflown = isOverflown(cellValue.current);
       setShowPopper(isCurrentlyOverflown);
@@ -153,7 +160,11 @@ function VendorMenu(props) {
      */
     value: PropTypes.string,
   };
-
+  const handleVariantOpen=(e,params)=>{
+    setOpenVarient(true);
+    setVariantValues(params);
+    console.log(params);
+  }
   var cols = [
     { field: "name", headerName: "Dish Name", width: 150, editable: true },
     { field: "cost", headerName: "Dish Price", width: 100, editable: true },
@@ -164,7 +175,39 @@ function VendorMenu(props) {
       editable: true,
       renderCell: renderCellExpand,
     },
-    { field: "inStock", headerName: "In stock", width: 100, editable: true },
+    {
+      field: "inStock",
+      headerName: "In stock",
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <Switch
+            checked={params.value}
+            onChange={(e) => changeStockStatus(e, params)}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+        );
+      },
+    },
+    {
+      field: "variant",
+      headerName: "Variants",
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <>
+          <Button
+            variant="contained"
+            component="label"
+            onClick={(e) =>handleVariantOpen(e,params)}
+          >
+            varient
+          </Button>
+         
+          </>
+        );
+      },
+    },
     {
       field: "imageUrl",
       headerName: "Image",
@@ -223,7 +266,21 @@ function VendorMenu(props) {
     setMenuImage(menuImage.concat(e.target.files[0]));
     setRows(tempRows);
   };
-
+  const changeStockStatus = (e, params) => {
+    var tempRows = JSON.parse(JSON.stringify(rows));
+    var objIndex = tempRows.findIndex((obj) => obj.id == params.row.id);
+    tempRows[objIndex].inStock = !tempRows[objIndex].inStock;
+    setRows(tempRows);
+  };
+  const addVariant = (values) => {
+    setOpenVarient(false);
+    console.log("hello");
+    var tempRows = JSON.parse(JSON.stringify(rows));
+    var objIndex = tempRows.findIndex((obj) => obj.id == variant.row.id);
+    tempRows[objIndex].variant=values;
+    setRows(tempRows);
+    console.log(tempRows);
+  };
   const deleteRow = (e, params) => {
     var tempRows = JSON.parse(JSON.stringify(rows));
     tempRows = tempRows.filter((obj) => obj.id != params.row.id);
@@ -299,7 +356,9 @@ function VendorMenu(props) {
     updateVendorMenu(rows);
     console.log(rows == receivedRows);
   };
-
+  const handleDialogClose=()=>{
+    setOpenVarient(false);
+  }
   return (
     <>
       <div>
@@ -342,6 +401,16 @@ function VendorMenu(props) {
             </Box>
           </>
         )}
+         <Dialog
+          open={openForVarient}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleDialogClose}
+          sx={{ width: "100%" }}
+        >
+          <Varient values={variant.value} onVariantChange={handleDialogClose} onVariantSubmit={addVariant}></Varient>
+        
+        </Dialog>
         <Box textAlign="center">
           <Button
             type="submit"
@@ -353,6 +422,7 @@ function VendorMenu(props) {
             Submit Data
           </Button>
         </Box>
+       
       </div>
     </>
   );

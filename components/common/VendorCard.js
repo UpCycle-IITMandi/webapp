@@ -4,6 +4,7 @@ import { Paper, Typography, Button, Modal, Box } from "@mui/material";
 import { Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import { useRouter } from "next/router";
 import style from "../../styles/modalStyle.json";
+import CloseIcon from "@mui/icons-material/Close";
 import AddEditVendorForm from "./AddEditVendorForm";
 import _ from "lodash";
 
@@ -52,6 +53,12 @@ function VendorCard({ data, isEditable, updateFunction, openAsVendor = true }) {
       {isEditable ? (
         <Modal open={openModal} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
           <Box sx={style}>
+          <div style={{ "padding-bottom": "20px" }}>
+            <span  style={{"fontWeight":"bold","fontSize": "large"}}>VENDOR'S DETAILS</span>
+            <span style={{ float: "right" }}>
+              <CloseIcon onClick={handleCloseModal} />
+            </span>
+          </div>
             <AddEditVendorForm method="edit" data={data} updateFunction={updateFunction} />
           </Box>
         </Modal>

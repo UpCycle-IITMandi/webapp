@@ -31,7 +31,7 @@ function Vendors({ isEditable = false }) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 ,"paddingTop":"18px"}}>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {vendors.map((i) => (
           <Grid item xs={2} sm={4} md={3} key={i._id}>

@@ -43,7 +43,7 @@ export default function AddEditVendorForm({ method = "add", data = defaultValues
     }
     var response = await Fetch({
       header: {
-        Authorization: Cookies.get("super user token") ? Cookies.get("super user token") : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InBhc3N3b3JkIjoiaGVsbG8ifSwiaWF0IjoxNjY4MTE3MDg3fQ.o-eqcZ8yTfD8grMjsEsHymx_RXlw0HLGAuWz2QxuP3w",
+        Authorization: Cookies.get("super user token") ? Cookies.get("super user token") : "",
       },
       route: method === "add" ? "/api/v1/vendor/add" : "/api/v1/vendor/update",
       type: "POST",
@@ -62,7 +62,7 @@ export default function AddEditVendorForm({ method = "add", data = defaultValues
   };
 
   return (
-    <div>
+    <div >
       <form>
         {/* <Typography mt={2}>{contactNumber}</Typography> */}
         <FormInputText name={"shopName"} control={control} label={"Shop Name"} />
