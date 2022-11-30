@@ -1,5 +1,8 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Typography from "@mui/material/Typography";
 import { Alert } from "@mui/material";
 import Header from "../common/Header";
@@ -8,8 +11,10 @@ import Fetch from "../../common/Fetch";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { Grid, Paper, Link } from "@mui/material";
+
 function Login(props) {
   const router = useRouter();
+  const [togglePassword, setTogglePassword] = useState(false);
   const [vendorId, setVendorId] = useState(null);
   const [isIdRequired, setIdRequired] = useState(true);
   useEffect(() => {
@@ -23,6 +28,9 @@ function Login(props) {
   const [message, setMessage] = useState("");
   const onTextChangePassword = (e) => setPassword(e.target.value);
   const onTextChangeVendor = (e) => setVendorId(e.target.value);
+  const togglePasswordHide = () => {
+    setTogglePassword((togglePassword) => !togglePassword);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -75,8 +83,22 @@ function Login(props) {
           <TextField
             onChange={onTextChangePassword}
             label="Password"
-            type="password"
+            type={!togglePassword ? "password" : "text"}
             fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  position="end"
+                  style={{ cursor: "pointer", transition: "all 0.3s" }}
+                >
+                  {togglePassword ? (
+                    <Visibility onClick={togglePasswordHide} />
+                  ) : (
+                    <VisibilityOff onClick={togglePasswordHide} />
+                  )}
+                </InputAdornment>
+              ),
+            }}
           />
           <br></br>
           <Button
