@@ -57,14 +57,14 @@ function Variant(props) {
 
   const addRow = () => {
     var tempRows = JSON.parse(JSON.stringify(rows));
-    if (!tempRows.length ) {
+    if (!tempRows.length) {
       tempRows = [
         {
-          id:  1,
+          id: 1,
           type: "Type of variant",
           inStock: true,
           cost: 0,
-        }
+        },
       ];
     } else {
       tempRows.push({
@@ -82,10 +82,10 @@ function Variant(props) {
     console.log("Received rows", receivedRows);
     setRows(receivedRows);
   };
-  const handleSubmit=(e)=>{
-    let tempRows= JSON.parse(JSON.stringify(rows));
+  const handleSubmit = (e) => {
+    let tempRows = JSON.parse(JSON.stringify(rows));
     props.onVariantSubmit(tempRows);
-  }
+  };
   return (
     <>
       <DialogTitle>{"Use Google's location service?"}</DialogTitle>

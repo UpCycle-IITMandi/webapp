@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import { useRouter } from "next/router";
 import AddVendorModal from "./AddVendorModal";
 import Cookies from "js-cookie";
@@ -64,7 +64,7 @@ function Header(props) {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </Head>
-      <Box sx={{ flexGrow: 1}}>
+      <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
             <IconButton
@@ -77,23 +77,34 @@ function Header(props) {
             >
               <HomeIcon />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} cursor={"pointer"}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1 }}
+              cursor={"pointer"}
+            >
               Village Square
             </Typography>
-            {(!props.title)&&(<> <Button color="inherit" onClick={handleSuperUserSubmit}>
-              Superuser Login
-            </Button>
-            <Button color="inherit" onClick={handleVendorSubmit}>
-              Vendor Login
-            </Button>
-            </>)}
-            {props.title&&( 
+            {!props.title && (
               <>
-              {props.title!=="Vendor Page" &&<AddVendorModal updateFunction={updateDashboard} />}
-            <Button color="inherit" onClick={handleLogoutSubmit}>
-              Logout
-            </Button>
-            </>
+                {" "}
+                <Button color="inherit" onClick={handleSuperUserSubmit}>
+                  Superuser Login
+                </Button>
+                <Button color="inherit" onClick={handleVendorSubmit}>
+                  Vendor Login
+                </Button>
+              </>
+            )}
+            {props.title && (
+              <>
+                {props.title !== "Vendor Page" && (
+                  <AddVendorModal updateFunction={updateDashboard} />
+                )}
+                <Button color="inherit" onClick={handleLogoutSubmit}>
+                  Logout
+                </Button>
+              </>
             )}
           </Toolbar>
         </AppBar>

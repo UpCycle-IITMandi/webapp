@@ -142,9 +142,8 @@ const vendorPage = () => {
               onChangeIndex={handleChangeIndex}
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
-              
-                    <Orders orders={orders} />
-                  {/* <Grid item xs={3}>
+                <Orders orders={orders} />
+                {/* <Grid item xs={3}>
                     <VendorCard
                       data={vendorData}
                       isEditable={true}
@@ -152,7 +151,6 @@ const vendorPage = () => {
                       openAsVendor={false}
                     />
                   </Grid> */}
-              
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
                 <VendorMenu data={vendorData} />

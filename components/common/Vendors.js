@@ -12,7 +12,9 @@ function Vendors({ isEditable = false }) {
       var response = await Fetch({
         header: {
           "Content-type": "application/json",
-          Authorization: Cookies.get("super user token") ? Cookies.get("super user token") : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InBhc3N3b3JkIjoiaGVsbG8ifSwiaWF0IjoxNjY4MTE3MDg3fQ.o-eqcZ8yTfD8grMjsEsHymx_RXlw0HLGAuWz2QxuP3w",
+          Authorization: Cookies.get("super user token")
+            ? Cookies.get("super user token")
+            : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InBhc3N3b3JkIjoiaGVsbG8ifSwiaWF0IjoxNjY4MTE3MDg3fQ.o-eqcZ8yTfD8grMjsEsHymx_RXlw0HLGAuWz2QxuP3w",
         },
         route: "/api/v1/vendor/getAll",
       });
@@ -31,11 +33,19 @@ function Vendors({ isEditable = false }) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 ,"paddingTop":"18px"}}>
-      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+    <Box sx={{ flexGrow: 1, paddingTop: "18px" }}>
+      <Grid
+        container
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+      >
         {vendors.map((i) => (
           <Grid item xs={2} sm={4} md={3} key={i._id}>
-            <VendorCard data={i} isEditable={isEditable} updateFunction={updateVendors}></VendorCard>
+            <VendorCard
+              data={i}
+              isEditable={isEditable}
+              updateFunction={updateVendors}
+            ></VendorCard>
           </Grid>
         ))}
       </Grid>

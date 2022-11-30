@@ -35,8 +35,8 @@ function OrderCard(props) {
     if (!response.success) {
       Router.push("/vendor/" + props.order.vendorId + "/login");
     } else {
-      let order=props.order;
-      order.status=status;
+      let order = props.order;
+      order.status = status;
       props.onPropsChange(order);
     }
   };
@@ -48,45 +48,54 @@ function OrderCard(props) {
   };
   return (
     <>
-    {(props.order)&&(<Card sx={{ minWidth: 100 }}>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          Order-{count}
-        </Typography>
-        <Typography variant="h6" component="div">
-          Items
-        </Typography>
-        {props.order.orderDescription.map((item, i) => (
-          <Paper key={i}>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {item.productId} : {item.quantity}
+      {props.order && (
+        <Card sx={{ minWidth: 100 }}>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              Order-{count}
             </Typography>
-          </Paper>
-        ))}
-        <Typography variant="body2">
-          Address : {props.order.address} <br /> Cost : {props.order.cost}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        {props.order.status == "Inqueue" && (
-          <Button size="small" variant="outlined" onClick={handleAcceptedOrder}>
-            Mark as delivered
-          </Button>
-        )}
-        {props.order.status == "Pending" && (
-          <Button size="small" variant="outlined" onClick={handlePendingOrder}>
-            Accept the order
-          </Button>
-        )}
-        {props.order.status == "Delivered" && (
-          <Button size="small" variant="outlined" disabled>
-            Delivered
-          </Button>
-        )}
-      </CardActions>
-    </Card>)
-        }
-        </>
+            <Typography variant="h6" component="div">
+              Items
+            </Typography>
+            {props.order.orderDescription.map((item, i) => (
+              <Paper key={i}>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                  {item.productId} : {item.quantity}
+                </Typography>
+              </Paper>
+            ))}
+            <Typography variant="body2">
+              Address : {props.order.address} <br /> Cost : {props.order.cost}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            {props.order.status == "Inqueue" && (
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={handleAcceptedOrder}
+              >
+                Mark as delivered
+              </Button>
+            )}
+            {props.order.status == "Pending" && (
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={handlePendingOrder}
+              >
+                Accept the order
+              </Button>
+            )}
+            {props.order.status == "Delivered" && (
+              <Button size="small" variant="outlined" disabled>
+                Delivered
+              </Button>
+            )}
+          </CardActions>
+        </Card>
+      )}
+    </>
   );
 }
 

@@ -18,10 +18,16 @@ var defaultValues = {
   images: [],
 };
 
-export default function AddEditVendorForm({ method = "add", data = defaultValues, updateFunction }) {
+export default function AddEditVendorForm({
+  method = "add",
+  data = defaultValues,
+  updateFunction,
+}) {
   const Router = useRouter();
   const [uploadedImages, setUploadedImages] = React.useState([]);
-  const { handleSubmit, reset, control, setValue, register } = useForm({ defaultValues: data });
+  const { handleSubmit, reset, control, setValue, register } = useForm({
+    defaultValues: data,
+  });
 
   const onSubmit = async (submitData) => {
     // Create form data, send post request, receive updated object in response, set it as vendorData
@@ -37,13 +43,15 @@ export default function AddEditVendorForm({ method = "add", data = defaultValues
       for (var i = 0; i < fileList.length; i++) {
         const file = fileList.item(i);
         console.log("here");
-        console.log(file,file.name);
+        console.log(file, file.name);
         formData.append("images", file, file.name);
       }
     }
     var response = await Fetch({
       header: {
-        Authorization: Cookies.get("super user token") ? Cookies.get("super user token") : "",
+        Authorization: Cookies.get("super user token")
+          ? Cookies.get("super user token")
+          : "",
       },
       route: method === "add" ? "/api/v1/vendor/add" : "/api/v1/vendor/update",
       type: "POST",
@@ -62,22 +70,40 @@ export default function AddEditVendorForm({ method = "add", data = defaultValues
   };
 
   return (
-    <div >
+    <div>
       <form>
         {/* <Typography mt={2}>{contactNumber}</Typography> */}
-        <FormInputText name={"shopName"} control={control} label={"Shop Name"} />
-        <FormInputText name={"ownerName"} control={control} label={"OwnerName"} />
+        <FormInputText
+          name={"shopName"}
+          control={control}
+          label={"Shop Name"}
+        />
+        <FormInputText
+          name={"ownerName"}
+          control={control}
+          label={"OwnerName"}
+        />
         <FormInputText name={"upiId"} control={control} label={"UPI Id"} />
         <FormInputText name={"address"} control={control} label={"Address"} />
-        <FormInputText name={"contactNumber"} control={control} label={"contactNumber"} />
+        <FormInputText
+          name={"contactNumber"}
+          control={control}
+          label={"contactNumber"}
+        />
         <FormInputText name={"password"} control={control} label={"Password"} />
         <div>
-          <Button variant="contained" component="label" onChange={(e) => handleUpload(e)}>
+          <Button
+            variant="contained"
+            component="label"
+            onChange={(e) => handleUpload(e)}
+          >
             Upload Vendor Images
             <input hidden multiple type="file" {...register("images")} />
           </Button>
         </div>
-        {data.images.length > 0 ? <Typography mt={2}>Existing Images</Typography> : null}
+        {data.images.length > 0 ? (
+          <Typography mt={2}>Existing Images</Typography>
+        ) : null}
         <Carousel>
           {data.images.map((item, i) => (
             <Paper key={i}>
@@ -85,7 +111,9 @@ export default function AddEditVendorForm({ method = "add", data = defaultValues
             </Paper>
           ))}
         </Carousel>
-        {uploadedImages.length > 0 ? <Typography mt={2}>New uploaded Images</Typography> : null}
+        {uploadedImages.length > 0 ? (
+          <Typography mt={2}>New uploaded Images</Typography>
+        ) : null}
         <Carousel>
           {uploadedImages.map((item, i) => (
             <Paper key={i}>

@@ -32,10 +32,10 @@ function VendorMenu(props) {
   const [menuImage, setMenuImage] = useState([]);
   const [vendorId, setVendorId] = useState("");
   const [menuMessage, setMenuMessage] = useState("");
-  const[open,setOpen]=useState(false);
+  const [open, setOpen] = useState(false);
   const [openForVarient, setOpenVarient] = useState(false);
   const btnstyle = { margin: "8px 0" };
-  const [variant,setVariantValues]=useState({});
+  const [variant, setVariantValues] = useState({});
   function isOverflown(element) {
     return (
       element.scrollHeight > element.clientHeight ||
@@ -160,11 +160,11 @@ function VendorMenu(props) {
      */
     value: PropTypes.string,
   };
-  const handleVariantOpen=(e,params)=>{
+  const handleVariantOpen = (e, params) => {
     setOpenVarient(true);
     setVariantValues(params);
     console.log(params);
-  }
+  };
   var cols = [
     { field: "name", headerName: "Dish Name", width: 150, editable: true },
     { field: "cost", headerName: "Dish Price", width: 100, editable: true },
@@ -196,14 +196,13 @@ function VendorMenu(props) {
       renderCell: (params) => {
         return (
           <>
-          <Button
-            variant="contained"
-            component="label"
-            onClick={(e) =>handleVariantOpen(e,params)}
-          >
-            varient
-          </Button>
-         
+            <Button
+              variant="contained"
+              component="label"
+              onClick={(e) => handleVariantOpen(e, params)}
+            >
+              varient
+            </Button>
           </>
         );
       },
@@ -277,7 +276,7 @@ function VendorMenu(props) {
     console.log("hello");
     var tempRows = JSON.parse(JSON.stringify(rows));
     var objIndex = tempRows.findIndex((obj) => obj.id == variant.row.id);
-    tempRows[objIndex].variant=values;
+    tempRows[objIndex].variant = values;
     setRows(tempRows);
     console.log(tempRows);
   };
@@ -321,7 +320,7 @@ function VendorMenu(props) {
         formData.append(
           "images",
           menuImage.at(imageIndex),
-          menuImage.at(imageIndex).name
+          menuImage.at(imageIndex).name,
         );
         rows.at(i).imageIndex = index;
         index++;
@@ -356,9 +355,9 @@ function VendorMenu(props) {
     updateVendorMenu(rows);
     console.log(rows == receivedRows);
   };
-  const handleDialogClose=()=>{
+  const handleDialogClose = () => {
     setOpenVarient(false);
-  }
+  };
   return (
     <>
       <div>
@@ -401,15 +400,18 @@ function VendorMenu(props) {
             </Box>
           </>
         )}
-         <Dialog
+        <Dialog
           open={openForVarient}
           TransitionComponent={Transition}
           keepMounted
           onClose={handleDialogClose}
           sx={{ width: "100%" }}
         >
-          <Varient values={variant.value} onVariantChange={handleDialogClose} onVariantSubmit={addVariant}></Varient>
-        
+          <Varient
+            values={variant.value}
+            onVariantChange={handleDialogClose}
+            onVariantSubmit={addVariant}
+          ></Varient>
         </Dialog>
         <Box textAlign="center">
           <Button
@@ -422,7 +424,6 @@ function VendorMenu(props) {
             Submit Data
           </Button>
         </Box>
-       
       </div>
     </>
   );

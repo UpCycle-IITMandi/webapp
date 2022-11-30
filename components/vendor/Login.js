@@ -1,29 +1,24 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import {Alert} from "@mui/material";
+import { Alert } from "@mui/material";
 import Header from "../common/Header";
 import React, { useEffect, useState } from "react";
 import Fetch from "../../common/Fetch";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import {
-  Grid,
-  Paper,
-  Link,
-} from "@mui/material";
+import { Grid, Paper, Link } from "@mui/material";
 function Login(props) {
   const router = useRouter();
-  const [vendorId,setVendorId]=useState(null);
-  const [isIdRequired,setIdRequired]=useState(true);
-  useEffect(()=>{ 
-
-    if(props.vendorId){
+  const [vendorId, setVendorId] = useState(null);
+  const [isIdRequired, setIdRequired] = useState(true);
+  useEffect(() => {
+    if (props.vendorId) {
       setVendorId(props.vendorId);
       console.log(props.vendorId);
       setIdRequired(false);
     }
-  },[props]);
+  }, [props]);
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const onTextChangePassword = (e) => setPassword(e.target.value);
@@ -43,13 +38,13 @@ function Login(props) {
       }),
     });
     if (data.success) {
-      localStorage.setItem("vendor token",data.data);
+      localStorage.setItem("vendor token", data.data);
       Cookies.set("vendor token", data.data);
       router.push({
         pathname: "/vendor/" + data.vendorId,
       });
     } else {
-       setMessage("invalid password");
+      setMessage("invalid password");
     }
   };
   const paperStyle = {
@@ -61,19 +56,22 @@ function Login(props) {
   const btnstyle = { margin: "8px 0" };
   return (
     <>
-    <Header></Header>
+      <Header></Header>
       <Grid>
-      {message&&<Alert severity="error">{message}</Alert>}
+        {message && <Alert severity="error">{message}</Alert>}
         <Paper elevation={10} style={paperStyle}>
-        {isIdRequired&&(<> <TextField
-           onChange={onTextChangeVendor}
-            label="Vendor Id"
-            fullWidth
-          />
-          <br></br>
-          <br></br>
-          </>
-        )}
+          {isIdRequired && (
+            <>
+              {" "}
+              <TextField
+                onChange={onTextChangeVendor}
+                label="Vendor Id"
+                fullWidth
+              />
+              <br></br>
+              <br></br>
+            </>
+          )}
           <TextField
             onChange={onTextChangePassword}
             label="Password"

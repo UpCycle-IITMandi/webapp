@@ -12,7 +12,7 @@ export default function useApiRef(columns) {
           return null;
         },
       }),
-    [columns]
+    [columns],
   );
 
   return { apiRef, columns: _columns };
