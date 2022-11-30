@@ -37,10 +37,11 @@ function Vendors({ isEditable = false }) {
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
+        // columns={{ xs: 4, sm: 8, md: 12 }}
+        style={{ padding: "20px" }}
       >
         {vendors.map((i) => (
-          <Grid item xs={2} sm={4} md={3} key={i._id}>
+          <Grid item xs={12 / 1} sm={12 / 2} md={12 / 4} key={i._id}>
             <VendorCard
               data={i}
               isEditable={isEditable}
