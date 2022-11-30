@@ -49,7 +49,7 @@ function VendorCard({ data, isEditable, updateFunction, openAsVendor = true }) {
         <CardActions>
           {openAsVendor ? (
             <Button
-              sx={{ "margin-left": "auto", "margin-right": "auto" }}
+              sx={{ marginLeft: "auto", marginRight: "auto" }}
               onClick={handleOpenPage}
             >
               Open as Vendor
