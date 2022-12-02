@@ -71,7 +71,7 @@ const vendorPage = () => {
         type: "POST",
         header: {
           "Content-type": "application/json",
-          Authorization: Cookies.get("vendor token")
+          authtoken: Cookies.get("vendor token")
             ? Cookies.get("vendor token")
             : "",
         },
@@ -88,17 +88,14 @@ const vendorPage = () => {
     };
     const getOrders = async () => {
       var response = await Fetch({
-        route: "/api/v1/order/getVendorOrders",
-        type: "POST",
+        route: "/api/v1/order/getAll",
+        type: "GET",
         header: {
           "Content-type": "application/json",
-          Authorization: Cookies.get("vendor token")
+          authtoken: Cookies.get("vendor token")
             ? Cookies.get("vendor token")
             : "",
-        },
-        body: JSON.stringify({
-          vendorId: vendorId,
-        }),
+        }
       });
       if (!response.success) {
         Router.push("/vendor/" + vendorId + "/login");

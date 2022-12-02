@@ -12,7 +12,7 @@ function Vendors({ isEditable = false }) {
       var response = await Fetch({
         header: {
           "Content-type": "application/json",
-          Authorization: Cookies.get("super user token")
+          authtoken: Cookies.get("super user token")
             ? Cookies.get("super user token")
             : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InBhc3N3b3JkIjoiaGVsbG8ifSwiaWF0IjoxNjY4MTE3MDg3fQ.o-eqcZ8yTfD8grMjsEsHymx_RXlw0HLGAuWz2QxuP3w",
         },

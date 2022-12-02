@@ -18,11 +18,11 @@ function OrderCard(props) {
   const Router = useRouter();
   const updateOrderStatus = async (status) => {
     var response = await Fetch({
-      route: "/api/v1/order/updateOrderStatus",
+      route: "/api/v1/order/update",
       type: "POST",
       header: {
         "Content-type": "application/json",
-        Authorization: Cookies.get("vendor token")
+        authtoken: Cookies.get("vendor token")
           ? Cookies.get("vendor token")
           : "",
       },

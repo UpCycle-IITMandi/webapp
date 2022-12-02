@@ -335,7 +335,7 @@ function VendorMenu(props) {
       route: "/api/v1/vendor/updateMenu",
       type: "POST",
       header: {
-        Authorization: Cookies.get("vendor token")
+        authtoken: Cookies.get("vendor token")
           ? Cookies.get("vendor token")
           : "",
       },

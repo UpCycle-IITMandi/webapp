@@ -49,7 +49,7 @@ export default function AddEditVendorForm({
     }
     var response = await Fetch({
       header: {
-        Authorization: Cookies.get("super user token")
+        authtoken: Cookies.get("super user token")
           ? Cookies.get("super user token")
           : "",
       },
