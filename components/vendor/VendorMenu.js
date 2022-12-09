@@ -16,10 +16,13 @@ import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import Varient from "./subcomponents/Variant";
 import Slide from "@mui/material/Slide";
+import useCheckMobileScreen from "./subcomponents/mobileScreen";
+import EditRowMobile from "./subcomponents/editRowMobile";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
 function convertMapToRows(map) {
   var rows = [];
   map.forEach((value, key) => {
@@ -29,13 +32,17 @@ function convertMapToRows(map) {
 }
 
 function VendorMenu(props) {
+  const isMobile = useCheckMobileScreen();
   const [menuImage, setMenuImage] = useState([]);
   const [vendorId, setVendorId] = useState("");
   const [menuMessage, setMenuMessage] = useState("");
   const [open, setOpen] = useState(false);
   const [openForVarient, setOpenVarient] = useState(false);
+  const [openForEdit, setOpenForEdit] = useState(false);
   const btnstyle = { margin: "8px 0" };
   const [variant, setVariantValues] = useState({});
+  const [edit, setEditValues] = useState({});
+
   function isOverflown(element) {
     return (
       element.scrollHeight > element.clientHeight ||
@@ -160,20 +167,45 @@ function VendorMenu(props) {
      */
     value: PropTypes.string,
   };
+
   const handleVariantOpen = (e, params) => {
     setOpenVarient(true);
     setVariantValues(params);
     console.log(params);
   };
+
   var cols = [
     { field: "name", headerName: "Dish Name", width: 150, editable: true },
-    { field: "cost", headerName: "Dish Price", width: 100, editable: true },
+    { field: "cost", headerName: "Dish Price", width: 80, editable: true },
     {
       field: "description",
       headerName: "Dish description",
       width: 250,
       editable: true,
       renderCell: renderCellExpand,
+    },
+    {
+      field: "editMobile",
+      headerName: "",
+      width: 100,
+      editable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Button
+              variant="contained"
+              component="label"
+              onClick={(e) => {
+                console.log(params);
+                setOpenForEdit(true);
+                setEditValues(params.row);
+              }}
+            >
+              Edit
+            </Button>
+          </>
+        );
+      },
     },
     {
       field: "inStock",
@@ -192,8 +224,22 @@ function VendorMenu(props) {
     {
       field: "variant",
       headerName: "Variants",
-      width: 100,
+      width: 150,
       renderCell: (params) => {
+        console.log("Variant params", params);
+        if (params.formattedValue.length === 0) {
+          return (
+            <>
+              <Button
+                variant="contained"
+                disabled
+                // component="label"
+              >
+                No Variants
+              </Button>
+            </>
+          );
+        }
         return (
           <>
             <Button
@@ -201,7 +247,7 @@ function VendorMenu(props) {
               component="label"
               onClick={(e) => handleVariantOpen(e, params)}
             >
-              varient
+              Varients
             </Button>
           </>
         );
@@ -226,7 +272,7 @@ function VendorMenu(props) {
             component="label"
             onChange={(e) => addImage(e, params)}
           >
-            Add Image
+            Edit Image
             <input hidden type="file" />
           </Button>
         );
@@ -249,13 +295,16 @@ function VendorMenu(props) {
       },
     },
   ];
+
   const { apiRef, columns } = useApiRef(cols);
   const [rows, setRows] = React.useState([]);
+
   useEffect(() => {
     console.log(props.data);
     setRows(props.data.inventory);
     setVendorId(props.data.vendorId);
   }, [props]);
+
   const addImage = (e, params) => {
     var url = URL.createObjectURL(e.target.files[0]);
     var tempRows = JSON.parse(JSON.stringify(rows));
@@ -265,12 +314,21 @@ function VendorMenu(props) {
     setMenuImage(menuImage.concat(e.target.files[0]));
     setRows(tempRows);
   };
+
+  const changeColOfRow = (colName, newVal, params) => {
+    var tempRows = JSON.parse(JSON.stringify(rows));
+    var objIndex = tempRows.findIndex((obj) => obj.id == params.row.id);
+    tempRows[objIndex][colName] = newVal;
+    setRows(tempRows);
+  };
+
   const changeStockStatus = (e, params) => {
     var tempRows = JSON.parse(JSON.stringify(rows));
     var objIndex = tempRows.findIndex((obj) => obj.id == params.row.id);
     tempRows[objIndex].inStock = !tempRows[objIndex].inStock;
     setRows(tempRows);
   };
+
   const addVariant = (values) => {
     setOpenVarient(false);
     console.log("hello");
@@ -280,10 +338,10 @@ function VendorMenu(props) {
     setRows(tempRows);
     console.log(tempRows);
   };
+
   const deleteRow = (e, params) => {
     var tempRows = JSON.parse(JSON.stringify(rows));
     tempRows = tempRows.filter((obj) => obj.id != params.row.id);
-
     setRows(tempRows);
   };
 
@@ -344,6 +402,7 @@ function VendorMenu(props) {
     setMenuMessage(response);
     setOpen(true);
   };
+
   const submitData = () => {
     if (apiRef.current == null) {
       setMenuMessage({ success: false, message: "Please enter the menu" });
@@ -355,9 +414,15 @@ function VendorMenu(props) {
     updateVendorMenu(rows);
     console.log(rows == receivedRows);
   };
-  const handleDialogClose = () => {
+
+  const handleVariantClose = () => {
     setOpenVarient(false);
   };
+
+  const handleEditClose = () => {
+    setOpenForEdit(false);
+  };
+
   return (
     <>
       <div>
@@ -388,11 +453,21 @@ function VendorMenu(props) {
             <Box sx={{ width: "100%" }}>
               <DataGrid
                 autoHeight
+                columnVisibilityModel={{
+                  __HIDDEN__: false,
+                  editMobile: isMobile, // visible if mobile
+                  description: !isMobile, // invisible if mobile
+                  inStock: !isMobile,
+                  variant: !isMobile,
+                  imageUrl: !isMobile,
+                  upload: !isMobile,
+                  delete: !isMobile,
+                }}
                 rows={rows}
                 columns={columns}
                 onCellEditStop={(params, event) => updateRows(event, params)}
               />
-              <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+              <Stack direction="row" spacing={1} sx={{ my: 1 }}>
                 <Button size="small" onClick={addRow}>
                   Add a row
                 </Button>
@@ -404,14 +479,30 @@ function VendorMenu(props) {
           open={openForVarient}
           TransitionComponent={Transition}
           keepMounted
-          onClose={handleDialogClose}
+          onClose={handleVariantClose}
           sx={{ width: "100%" }}
         >
           <Varient
             values={variant.value}
-            onVariantChange={handleDialogClose}
+            onVariantChange={handleVariantClose}
             onVariantSubmit={addVariant}
           ></Varient>
+        </Dialog>
+        <Dialog
+          open={openForEdit}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleEditClose}
+          sx={{ width: "100%" }}
+        >
+          <EditRowMobile
+            values={edit}
+            {...{
+              changeStockStatus,
+              addImage,
+              changeColOfRow,
+            }}
+          ></EditRowMobile>
         </Dialog>
         <Box textAlign="center">
           <Button
