@@ -196,9 +196,8 @@ function VendorMenu(props) {
               variant="contained"
               component="label"
               onClick={(e) => {
-                console.log(params);
                 setOpenForEdit(true);
-                setEditValues(params.row);
+                setEditValues(params.row.id);
               }}
             >
               Edit
@@ -496,7 +495,7 @@ function VendorMenu(props) {
           sx={{ width: "100%" }}
         >
           <EditRowMobile
-            values={edit}
+            values={rows.filter((obj) => obj.id == edit)[0]}
             {...{
               changeStockStatus,
               addImage,

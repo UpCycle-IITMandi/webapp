@@ -25,48 +25,50 @@ function EditRowMobile({
         padding: 20,
       }}
     >
-      <TextField
-        variant="standard"
-        InputLabelProps={{ shrink: true }}
-        onChange={(e) => changeColOfRow("name", e.value, rowId)}
-        value={values.name}
-        label={"Dish Name"}
-      />
-      <TextField
-        variant="standard"
-        InputLabelProps={{ shrink: true }}
-        onChange={(e) => changeColOfRow("cost", e.value, rowId)}
-        value={values.cost}
-        label={"Dish Price"}
-      />
-      <TextField
-        variant="standard"
-        InputLabelProps={{ shrink: true }}
-        onChange={(e) => changeColOfRow("description", e.value, rowId)}
-        value={values.description}
-        label={"Dish Description"}
-      />
-      <FormControlLabel
-        control={
-          <Switch
-            defaultChecked
-            onChange={(e) => changeStockStatus(e, rowId)}
-            inputProps={{ "aria-label": "controlled" }}
-            checked={values.inStock}
-          />
-        }
-        label="In Stock"
-      />
-      <Stack>
-        <CardMedia component="img" height="140" image={values.imageUrl} />
-        <Button
-          variant="contained"
-          component="label"
-          onChange={(e) => addImage(e, rowId)}
-        >
-          Edit Image
-          <input hidden type="file" />
-        </Button>
+      <Stack spacing={2}>
+        <TextField
+          variant="standard"
+          InputLabelProps={{ shrink: true }}
+          onChange={(e) => changeColOfRow("name", e.value, rowId)}
+          value={values.name}
+          label={"Dish Name"}
+        />
+        <TextField
+          variant="standard"
+          InputLabelProps={{ shrink: true }}
+          onChange={(e) => changeColOfRow("cost", e.value, rowId)}
+          value={values.cost}
+          label={"Dish Price"}
+        />
+        <TextField
+          multiline
+          variant="standard"
+          InputLabelProps={{ shrink: true }}
+          onChange={(e) => changeColOfRow("description", e.value, rowId)}
+          value={values.description}
+          label={"Dish Description"}
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              onChange={(e) => changeStockStatus(e, rowId)}
+              inputProps={{ "aria-label": "controlled" }}
+              checked={values.inStock}
+            />
+          }
+          label="In Stock"
+        />
+        <Stack>
+          <CardMedia component="img" height="140" image={values.imageUrl} />
+          <Button
+            variant="contained"
+            component="label"
+            onChange={(e) => addImage(e, rowId)}
+          >
+            Edit Image
+            <input hidden type="file" />
+          </Button>
+        </Stack>
       </Stack>
     </Paper>
   );
