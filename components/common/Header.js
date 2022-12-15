@@ -15,9 +15,6 @@ import Cookies from "js-cookie";
 function Header(props) {
   const Router = useRouter();
   const [state, setState] = React.useState(0);
-  const updateDashboard = (...anything) => {
-    setState(state + 1);
-  };
   function handleSuperUserSubmit() {
     Router.push({
       pathname: "/superuser/login",
@@ -89,7 +86,7 @@ function Header(props) {
             </>)}
             {props.title&&( 
               <>
-              {props.title!=="Vendor Page" &&<AddVendorModal updateFunction={updateDashboard} />}
+              {props.title!=="Vendor Page" }
             <Button color="inherit" onClick={handleLogoutSubmit}>
               Logout
             </Button>

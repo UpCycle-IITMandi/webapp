@@ -88,7 +88,7 @@ const vendorPage = () => {
     };
     const getOrders = async () => {
       var response = await Fetch({
-        route: "/api/v1/order/getVendorOrders",
+        route: "/api/v1/order/getAll",
         type: "POST",
         header: {
           "Content-type": "application/json",
@@ -100,11 +100,11 @@ const vendorPage = () => {
           vendorId: vendorId,
         }),
       });
+      console.log(response);
       if (!response.success) {
         Router.push("/vendor/" + vendorId + "/login");
       } else {
         setLoading(true);
-        console.log(response.orders);
         setOrders(response.orders);
       }
     };
@@ -142,17 +142,19 @@ const vendorPage = () => {
               onChangeIndex={handleChangeIndex}
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
-              
-                    <Orders orders={orders} />
-                  {/* <Grid item xs={3}>
-                    <VendorCard
-                      data={vendorData}
-                      isEditable={true}
-                      updateFunction={updateVendor}
-                      openAsVendor={false}
-                    />
-                  </Grid> */}
-              
+              <Grid container justify="center" spacing={2}>
+                <Grid item xs={8.5}>
+                  <Orders orders={orders} pages={4}/>
+                </Grid>
+                <Grid item xs={3.5}>
+                  <VendorCard
+                    data={vendorData}
+                    isEditable={true}
+                    updateFunction={updateVendor}
+                    openAsVendor={false}
+                  />
+                </Grid>
+                </Grid>
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
                 <VendorMenu data={vendorData} />

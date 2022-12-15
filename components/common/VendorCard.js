@@ -33,12 +33,15 @@ function VendorCard({ data, isEditable, updateFunction, openAsVendor = true }) {
           <Typography gutterBottom variant="h5" component="div">
             {data.shopName}
           </Typography>
+          
           <Typography component={"span"} variant="body2" color="text.secondary" lineHeight={"1.1"}>
+          <b>{data.isOpen?"Opened":"Closed"}</b>
             <p>{data.shopName}</p>
             <p>{data.ownerName}</p>
             <p>{data.upiId}</p>
             <p>{data.address}</p>
             <p>{data.message}</p>
+           
           </Typography>
         </CardContent>
         <CardActions>
@@ -59,7 +62,7 @@ function VendorCard({ data, isEditable, updateFunction, openAsVendor = true }) {
               <CloseIcon onClick={handleCloseModal} />
             </span>
           </div>
-            <AddEditVendorForm method="edit" data={data} updateFunction={updateFunction} />
+            <AddEditVendorForm method="edit" data={data} onClose={handleCloseModal} updateFunction={updateFunction} />
           </Box>
         </Modal>
       ) : null}

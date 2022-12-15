@@ -23,7 +23,7 @@ function Orders(props) {
   const [pagePending, setPagePending] = React.useState(1);
   const [pageInqueue, setPageInqueue] = React.useState(1);
   const [pageDelivered, setPageDelivered] = React.useState(1);
-  const pagesize = 4;
+  const pagesize = props.pages;
   const handleChangePending = (event, value) => {
     setPagePending(value);
   };
@@ -54,12 +54,14 @@ function Orders(props) {
       prev.filter((order) => order._id != propsId._id)
     );
     setDeliveredOrder((prev) => [...prev, ...[propsId]]);
+    setPageInqueue(1);
   }
   function handlePendingChange(propsId) {
     setPendingOrder((prev) =>
       prev.filter((order) => order._id != propsId._id)
     );
     setInqueueOrder((prev) => [...prev, ...[propsId]]);
+    setPagePending(1);
   }
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -75,7 +77,7 @@ function Orders(props) {
         {pendingOrder
           .slice(pagesize * (pagePending - 1), pagesize * pagePending)
           .map((order, i) => (
-            <Grid item xs={3} key={i._id}>
+            <Grid item xs={12/pagesize} key={i._id}>
               <OrderCard order={order} onPropsChange={handlePendingChange} />
             </Grid>
           ))}
@@ -96,7 +98,7 @@ function Orders(props) {
         {inqueueOrder
           .slice(pagesize * (pageInqueue - 1), pagesize * pageInqueue)
           .map((order, i) => (
-            <Grid item xs={3} key={i._id}>
+            <Grid item xs={12/pagesize} key={i._id}>
               <OrderCard order={order} onPropsChange={handleInqueueChange} />
             </Grid>
           ))}
@@ -107,7 +109,7 @@ function Orders(props) {
           onChange={handleChangeInqueue}
         />
       </Stack>
-      <Box style={{margin:"28px"}}>
+      {(deliveredOrder.length!==0)&&<><Box style={{margin:"28px"}}>
           <Typography variant="h6" component="div" style={{ padding: "10px" }}>
             Delivered orders
           </Typography>
@@ -117,7 +119,7 @@ function Orders(props) {
           {deliveredOrder
             .slice(pagesize * (pageDelivered - 1), pagesize * pageDelivered)
             .map((order, i) => (
-              <Grid item xs={3} key={i._id}>
+              <Grid item xs={12/pagesize} key={i._id}>
                 <OrderCard order={order} />
               </Grid>
             ))}
@@ -128,6 +130,8 @@ function Orders(props) {
           onChange={handleChangeDelivered}
         />
       </Stack>
+      </>
+      }
     </Box>
   );
 }

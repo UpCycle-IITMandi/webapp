@@ -43,13 +43,16 @@ function Login(props) {
       }),
     });
     if (data.success) {
+      Cookies.remove("super user token");
       localStorage.setItem("vendor token",data.data);
       Cookies.set("vendor token", data.data);
+      Cookies.set("vendorId", data.vendorId);
+      console.log(data);
       router.push({
         pathname: "/vendor/" + data.vendorId,
       });
     } else {
-       setMessage("invalid password");
+       setMessage(data.message);
     }
   };
   const paperStyle = {

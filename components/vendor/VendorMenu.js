@@ -32,10 +32,12 @@ function VendorMenu(props) {
   const [menuImage, setMenuImage] = useState([]);
   const [vendorId, setVendorId] = useState("");
   const [menuMessage, setMenuMessage] = useState("");
-  const[open,setOpen]=useState(false);
+  const [open, setOpen] = useState(false);
   const [openForVarient, setOpenVarient] = useState(false);
   const btnstyle = { margin: "8px 0" };
-  const [variant,setVariantValues]=useState({});
+  const [variant, setVariantValues] = useState({});
+  const [submit,setIsSubmit]=useState(false);
+  const [isRow,setIsRow]=useState(false);
   function isOverflown(element) {
     return (
       element.scrollHeight > element.clientHeight ||
@@ -160,11 +162,10 @@ function VendorMenu(props) {
      */
     value: PropTypes.string,
   };
-  const handleVariantOpen=(e,params)=>{
+  const handleVariantOpen = (e, params) => {
     setOpenVarient(true);
     setVariantValues(params);
-    console.log(params);
-  }
+  };
   var cols = [
     { field: "name", headerName: "Dish Name", width: 150, editable: true },
     { field: "cost", headerName: "Dish Price", width: 100, editable: true },
@@ -191,19 +192,22 @@ function VendorMenu(props) {
     },
     {
       field: "variant",
-      headerName: "Variants",
+      headerName: "Edit Variants",
       width: 100,
       renderCell: (params) => {
         return (
           <>
-          <Button
-            variant="contained"
-            component="label"
-            onClick={(e) =>handleVariantOpen(e,params)}
-          >
-            varient
-          </Button>
-         
+              {/* <GridCellExpand
+                value={JSON.stringify(params.value) || ""}
+                width={params.colDef.computedWidth}
+              /> */}
+            <Button
+              variant="contained"
+              component="label"
+              onClick={(e) => handleVariantOpen(e, params)}
+            >
+              variant
+            </Button>
           </>
         );
       },
@@ -274,10 +278,9 @@ function VendorMenu(props) {
   };
   const addVariant = (values) => {
     setOpenVarient(false);
-    console.log("hello");
     var tempRows = JSON.parse(JSON.stringify(rows));
     var objIndex = tempRows.findIndex((obj) => obj.id == variant.row.id);
-    tempRows[objIndex].variant=values;
+    tempRows[objIndex].variant = values;
     setRows(tempRows);
     console.log(tempRows);
   };
@@ -288,13 +291,24 @@ function VendorMenu(props) {
     setRows(tempRows);
   };
 
-  const updateRows = (e, params) => {
-    var receivedRows = apiRef.current.getRowModels();
+  async function updateRows (e, params) {
+    var receivedRows = await apiRef.current.getRowModels();
     receivedRows = convertMapToRows(receivedRows);
-    console.log("Received rows", receivedRows);
+    console.log(receivedRows);
     setRows(receivedRows);
+    if(submit){
+      setIsRow(true);
+    }
+    apiRef.current?apiRef.current.setSelectionModel([]):"";
   };
-
+  useEffect(() => {
+    if(isRow){
+    updateVendorMenu(rows);
+    setIsSubmit(false);
+    setIsRow(false);
+    }
+  }, [isRow]);
+  
   const addRow = () => {
     var tempRows = JSON.parse(JSON.stringify(rows));
     tempRows.push({
@@ -308,6 +322,7 @@ function VendorMenu(props) {
   };
 
   const updateVendorMenu = async (rows) => {
+
     let formData = new FormData();
     var index = 0;
     for (var i in rows) {
@@ -331,6 +346,10 @@ function VendorMenu(props) {
     }
     formData.append("menu", JSON.stringify(rows));
     formData.append("vendorId", vendorId);
+    console.log(formData.getAll("images"));
+    console.log(formData.getAll("menu"));
+    console.log(formData.getAll("images"));
+    
     setMenuImage([]);
     var response = await Fetch({
       route: "/api/v1/vendor/updateMenu",
@@ -351,14 +370,14 @@ function VendorMenu(props) {
       setOpen(true);
       return;
     }
-    var receivedRows = apiRef.current.getRowModels();
-    receivedRows = convertMapToRows(receivedRows);
-    updateVendorMenu(rows);
-    console.log(rows == receivedRows);
+    if(!apiRef.current.getSelectedRows().length){
+      setIsRow(true);
+    }
+    setIsSubmit(true);
   };
-  const handleDialogClose=()=>{
+  const handleDialogClose = () => {
     setOpenVarient(false);
-  }
+  };
   return (
     <>
       <div>
@@ -401,15 +420,19 @@ function VendorMenu(props) {
             </Box>
           </>
         )}
-         <Dialog
+        <Dialog
           open={openForVarient}
           TransitionComponent={Transition}
           keepMounted
           onClose={handleDialogClose}
-          sx={{ width: "100%" }}
+         
         >
-          <Varient values={variant.value} onVariantChange={handleDialogClose} onVariantSubmit={addVariant}></Varient>
-        
+          <Varient
+            values={variant.value}
+            title={variant.id}
+            onVariantChange={handleDialogClose}
+            onVariantSubmit={addVariant}
+          ></Varient>
         </Dialog>
         <Box textAlign="center">
           <Button
@@ -422,7 +445,6 @@ function VendorMenu(props) {
             Submit Data
           </Button>
         </Box>
-       
       </div>
     </>
   );
