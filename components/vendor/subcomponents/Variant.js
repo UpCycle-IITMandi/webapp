@@ -8,9 +8,12 @@ import Stack from "@mui/material/Stack";
 import { Switch, DialogActions } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import useApiRef from "./ApiRef";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function Variant(props) {
   const [nbRows, setNbRows] = React.useState(props.length);
+  const [submit, setIsSubmit] = useState(false);
+  const [isRow, setIsRow] = useState(false);
   function convertMapToRows(map) {
     var rows = [];
     map.forEach((value, key) => {
@@ -18,6 +21,14 @@ function Variant(props) {
     });
     return rows;
   }
+  useEffect(() => {
+    if (isRow) {
+      let tempRows = JSON.parse(JSON.stringify(rows));
+      setIsSubmit(false);
+      setIsRow(false);
+      props.onVariantSubmit(tempRows);
+    }
+  }, [isRow]);
   const data = [
     { id: 1, type: "small", inStock: true, cost: 500 },
     { id: 2, type: "large", inStock: true, cost: 700 },
@@ -26,15 +37,19 @@ function Variant(props) {
     var tempRows = JSON.parse(JSON.stringify(rows));
     var objIndex = tempRows.findIndex((obj) => obj.id == params.row.id);
     tempRows[objIndex].inStock = !tempRows[objIndex].inStock;
+    if (submit) {
+      setIsRow(true);
+    }
+    apiRef.current ? apiRef.current.setSelectionModel([]) : "";
     setRows(tempRows);
   };
   var cols = [
-    { field: "id", headerName: "S No.", width: 100 },
-    { field: "type", headerName: "Dish Name", width: 100, editable: true },
+    { field: "id", headerName: "S No.", width: 50 },
+    { field: "type", headerName: "Dish Name", width: 120, editable: true },
     {
       field: "inStock",
       headerName: "In stock",
-      width: 100,
+      width: 70,
       renderCell: (params) => {
         return (
           <Switch
@@ -45,7 +60,22 @@ function Variant(props) {
         );
       },
     },
-    { field: "cost", headerName: "Dish Price", width: 100, editable: true },
+
+    { field: "cost", headerName: "Dish Price", width: 80, editable: true },
+    {
+      field: "delete",
+      headerName: "Delete Item",
+      width: 80,
+      renderCell: (params) => {
+        return (
+          <Button
+            variant="outlined"
+            startIcon={<DeleteIcon />}
+            onClick={(e) => deleteRow(e, params)}
+          ></Button>
+        );
+      },
+    },
   ];
   const [rows, setRows] = useState([]);
   const { apiRef, columns } = useApiRef(cols);
@@ -76,19 +106,29 @@ function Variant(props) {
     }
     setRows(tempRows);
   };
+  const deleteRow = (e, params) => {
+    var tempRows = JSON.parse(JSON.stringify(rows));
+    tempRows = tempRows.filter((obj) => obj.id != params.row.id);
+    setRows(tempRows);
+  };
   const updateRows = (e, params) => {
     var receivedRows = apiRef.current.getRowModels();
     receivedRows = convertMapToRows(receivedRows);
-    console.log("Received rows", receivedRows);
     setRows(receivedRows);
+    if (submit) {
+      setIsRow(true);
+    }
+    apiRef.current ? apiRef.current.setSelectionModel([]) : "";
   };
   const handleSubmit = (e) => {
-    let tempRows = JSON.parse(JSON.stringify(rows));
-    props.onVariantSubmit(tempRows);
+    if (apiRef.current && apiRef.current.getSelectedRows().size === 0) {
+      setIsRow(true);
+    }
+    setIsSubmit(true);
   };
   return (
-    <>
-      <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+    <Box container width={500}>
+      <DialogTitle>{props.title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
           <Box>
@@ -110,7 +150,7 @@ function Variant(props) {
         <Button onClick={handleSubmit}>Submit</Button>
         <Button onClick={props.onVariantChange}>Close</Button>
       </DialogActions>
-    </>
+    </Box>
   );
 }
 

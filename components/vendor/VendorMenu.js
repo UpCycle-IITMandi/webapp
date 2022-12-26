@@ -42,7 +42,8 @@ function VendorMenu(props) {
   const btnstyle = { margin: "8px 0" };
   const [variant, setVariantValues] = useState({});
   const [edit, setEditValues] = useState({});
-
+  const [submit, setIsSubmit] = useState(false);
+  const [isRow, setIsRow] = useState(false);
   function isOverflown(element) {
     return (
       element.scrollHeight > element.clientHeight ||
@@ -241,6 +242,10 @@ function VendorMenu(props) {
         }
         return (
           <>
+            {/* <GridCellExpand
+                value={JSON.stringify(params.value) || ""}
+                width={params.colDef.computedWidth}
+              /> */}
             <Button
               variant="contained"
               component="label"
@@ -330,7 +335,6 @@ function VendorMenu(props) {
 
   const addVariant = (values) => {
     setOpenVarient(false);
-    console.log("hello");
     var tempRows = JSON.parse(JSON.stringify(rows));
     var objIndex = tempRows.findIndex((obj) => obj.id == variant.row.id);
     tempRows[objIndex].variant = values;
@@ -344,12 +348,23 @@ function VendorMenu(props) {
     setRows(tempRows);
   };
 
-  const updateRows = (e, params) => {
-    var receivedRows = apiRef.current.getRowModels();
+  async function updateRows(e, params) {
+    var receivedRows = await apiRef.current.getRowModels();
     receivedRows = convertMapToRows(receivedRows);
-    console.log("Received rows", receivedRows);
+    console.log(receivedRows);
     setRows(receivedRows);
-  };
+    if (submit) {
+      setIsRow(true);
+    }
+    apiRef.current ? apiRef.current.setSelectionModel([]) : "";
+  }
+  useEffect(() => {
+    if (isRow) {
+      updateVendorMenu(rows);
+      setIsSubmit(false);
+      setIsRow(false);
+    }
+  }, [isRow]);
 
   const addRow = () => {
     var tempRows = JSON.parse(JSON.stringify(rows));
@@ -387,6 +402,10 @@ function VendorMenu(props) {
     }
     formData.append("menu", JSON.stringify(rows));
     formData.append("vendorId", vendorId);
+    console.log(formData.getAll("images"));
+    console.log(formData.getAll("menu"));
+    console.log(formData.getAll("images"));
+
     setMenuImage([]);
     var response = await Fetch({
       route: "/api/v1/vendor/updateMenu",
@@ -408,10 +427,10 @@ function VendorMenu(props) {
       setOpen(true);
       return;
     }
-    var receivedRows = apiRef.current.getRowModels();
-    receivedRows = convertMapToRows(receivedRows);
-    updateVendorMenu(rows);
-    console.log(rows == receivedRows);
+    if (!apiRef.current.getSelectedRows().length) {
+      setIsRow(true);
+    }
+    setIsSubmit(true);
   };
 
   const handleVariantClose = () => {
@@ -422,6 +441,9 @@ function VendorMenu(props) {
     setOpenForEdit(false);
   };
 
+  const handleDialogClose = () => {
+    setOpenVarient(false);
+  };
   return (
     <>
       <div>

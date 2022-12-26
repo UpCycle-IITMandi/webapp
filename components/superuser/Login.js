@@ -28,6 +28,7 @@ function LoginSuperUser() {
     });
 
     if (data.success) {
+      Cookies.remove("vendor token");
       localStorage.setItem("super user token", data.data);
       Cookies.set("super user token", data.data);
       Router.push("/superuser/dashboard");

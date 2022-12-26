@@ -30,7 +30,7 @@ function AddVendorModal({ updateFunction }) {
             </span>
           </div>
 
-          <AddEditVendorForm updateFunction={updateFunction} />
+          <AddEditVendorForm   onClose={handleClose} updateFunction={updateFunction} />
         </Box>
       </Modal>
     </div>

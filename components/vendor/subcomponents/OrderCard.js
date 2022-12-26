@@ -24,7 +24,7 @@ function OrderCard(props) {
         "Content-type": "application/json",
         authtoken: Cookies.get("vendor token")
           ? Cookies.get("vendor token")
-          : "",
+          : Cookies.get("super user token")
       },
       body: JSON.stringify({
         vendorId: props.order.vendorId,
