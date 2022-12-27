@@ -12,8 +12,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 function Variant(props) {
   const [nbRows, setNbRows] = React.useState(props.length);
-  const [submit,setIsSubmit]=useState(false);
-  const [isRow,setIsRow]=useState(false);
+  const [submit, setIsSubmit] = useState(false);
+  const [isRow, setIsRow] = useState(false);
   function convertMapToRows(map) {
     var rows = [];
     map.forEach((value, key) => {
@@ -22,11 +22,11 @@ function Variant(props) {
     return rows;
   }
   useEffect(() => {
-    if(isRow){
-    let tempRows= JSON.parse(JSON.stringify(rows));
-    setIsSubmit(false);
-    setIsRow(false);
-    props.onVariantSubmit(tempRows);
+    if (isRow) {
+      let tempRows = JSON.parse(JSON.stringify(rows));
+      setIsSubmit(false);
+      setIsRow(false);
+      props.onVariantSubmit(tempRows);
     }
   }, [isRow]);
   const data = [
@@ -37,10 +37,10 @@ function Variant(props) {
     var tempRows = JSON.parse(JSON.stringify(rows));
     var objIndex = tempRows.findIndex((obj) => obj.id == params.row.id);
     tempRows[objIndex].inStock = !tempRows[objIndex].inStock;
-    if(submit){
+    if (submit) {
       setIsRow(true);
     }
-    apiRef.current?apiRef.current.setSelectionModel([]):"";
+    apiRef.current ? apiRef.current.setSelectionModel([]) : "";
     setRows(tempRows);
   };
   var cols = [
@@ -72,8 +72,7 @@ function Variant(props) {
             variant="outlined"
             startIcon={<DeleteIcon />}
             onClick={(e) => deleteRow(e, params)}
-          >
-          </Button>
+          ></Button>
         );
       },
     },
@@ -88,14 +87,14 @@ function Variant(props) {
 
   const addRow = () => {
     var tempRows = JSON.parse(JSON.stringify(rows));
-    if (!tempRows.length ) {
+    if (!tempRows.length) {
       tempRows = [
         {
-          id:  1,
+          id: 1,
           type: "Type of variant",
           inStock: true,
           cost: 0,
-        }
+        },
       ];
     } else {
       tempRows.push({
@@ -116,17 +115,17 @@ function Variant(props) {
     var receivedRows = apiRef.current.getRowModels();
     receivedRows = convertMapToRows(receivedRows);
     setRows(receivedRows);
-    if(submit){
+    if (submit) {
       setIsRow(true);
     }
-    apiRef.current?apiRef.current.setSelectionModel([]):"";
+    apiRef.current ? apiRef.current.setSelectionModel([]) : "";
   };
-  const handleSubmit=(e)=>{
-    if(apiRef.current&&(apiRef.current.getSelectedRows().size===0)){
+  const handleSubmit = (e) => {
+    if (apiRef.current && apiRef.current.getSelectedRows().size === 0) {
       setIsRow(true);
     }
     setIsSubmit(true);
-  }
+  };
   return (
     <Box container width={500}>
       <DialogTitle>{props.title}</DialogTitle>
@@ -148,10 +147,9 @@ function Variant(props) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-      <Button onClick={handleSubmit}>Submit</Button>
-      <Button onClick={props.onVariantChange}>Close</Button>
+        <Button onClick={handleSubmit}>Submit</Button>
+        <Button onClick={props.onVariantChange}>Close</Button>
       </DialogActions>
-      
     </Box>
   );
 }

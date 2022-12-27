@@ -33,20 +33,27 @@ function VendorCard({ data, isEditable, updateFunction, openAsVendor = true }) {
           <Typography gutterBottom variant="h5" component="div">
             {data.shopName}
           </Typography>
-          
-          <Typography component={"span"} variant="body2" color="text.secondary" lineHeight={"1.1"}>
-          <b>{data.isOpen?"Opened":"Closed"}</b>
+
+          <Typography
+            component={"span"}
+            variant="body2"
+            color="text.secondary"
+            lineHeight={"1.1"}
+          >
+            <b>{data.isOpen ? "Opened" : "Closed"}</b>
             <p>{data.shopName}</p>
             <p>{data.ownerName}</p>
             <p>{data.upiId}</p>
             <p>{data.address}</p>
             <p>{data.message}</p>
-           
           </Typography>
         </CardContent>
         <CardActions>
           {openAsVendor ? (
-            <Button sx={{ "margin-left": "auto", "margin-right": "auto" }} onClick={handleOpenPage}>
+            <Button
+              sx={{ marginLeft: "auto", marginRight: "auto" }}
+              onClick={handleOpenPage}
+            >
               Open as Vendor
             </Button>
           ) : null}
@@ -54,15 +61,27 @@ function VendorCard({ data, isEditable, updateFunction, openAsVendor = true }) {
         </CardActions>
       </Card>
       {isEditable ? (
-        <Modal open={openModal} onClose={handleCloseModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+        <Modal
+          open={openModal}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
           <Box sx={style}>
-          <div style={{ "padding-bottom": "20px" }}>
-            <span  style={{"fontWeight":"bold","fontSize": "large"}}>VENDOR'S DETAILS</span>
-            <span style={{ float: "right" }}>
-              <CloseIcon onClick={handleCloseModal} />
-            </span>
-          </div>
-            <AddEditVendorForm method="edit" data={data} onClose={handleCloseModal} updateFunction={updateFunction} />
+            <div style={{ "padding-bottom": "20px" }}>
+              <span style={{ fontWeight: "bold", fontSize: "large" }}>
+                VENDOR'S DETAILS
+              </span>
+              <span style={{ float: "right" }}>
+                <CloseIcon onClick={handleCloseModal} />
+              </span>
+            </div>
+            <AddEditVendorForm
+              method="edit"
+              data={data}
+              onClose={handleCloseModal}
+              updateFunction={updateFunction}
+            />
           </Box>
         </Modal>
       ) : null}

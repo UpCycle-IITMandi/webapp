@@ -11,7 +11,9 @@ function AddVendorModal({ updateFunction }) {
 
   return (
     <div>
-      <Button onClick={handleOpen} color="inherit" >Add Vendor</Button>
+      <Button onClick={handleOpen} color="inherit">
+        Add Vendor
+      </Button>
       <Modal
         open={openModal}
         onClose={handleClose}
@@ -20,7 +22,9 @@ function AddVendorModal({ updateFunction }) {
       >
         <Box sx={style}>
           <div style={{ "padding-bottom": "20px" }}>
-            <span  style={{"fontWeight":"bold","fontSize": "large"}}>VENDOR'S DETAILS</span>
+            <span style={{ fontWeight: "bold", fontSize: "large" }}>
+              VENDOR'S DETAILS
+            </span>
             <span style={{ float: "right" }}>
               <CloseIcon onClick={handleClose} />
             </span>

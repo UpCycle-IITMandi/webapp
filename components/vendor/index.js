@@ -71,7 +71,7 @@ const vendorPage = () => {
         type: "POST",
         header: {
           "Content-type": "application/json",
-          Authorization: Cookies.get("vendor token")
+          authtoken: Cookies.get("vendor token")
             ? Cookies.get("vendor token")
             : "",
         },
@@ -92,13 +92,10 @@ const vendorPage = () => {
         type: "POST",
         header: {
           "Content-type": "application/json",
-          Authorization: Cookies.get("vendor token")
+          authtoken: Cookies.get("vendor token")
             ? Cookies.get("vendor token")
             : "",
         },
-        body: JSON.stringify({
-          vendorId: vendorId,
-        }),
       });
       console.log(response);
       if (!response.success) {
@@ -142,18 +139,18 @@ const vendorPage = () => {
               onChangeIndex={handleChangeIndex}
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
-              <Grid container justify="center" spacing={2}>
-                <Grid item xs={8.5}>
-                  <Orders orders={orders} pages={4}/>
-                </Grid>
-                <Grid item xs={3.5}>
-                  <VendorCard
-                    data={vendorData}
-                    isEditable={true}
-                    updateFunction={updateVendor}
-                    openAsVendor={false}
-                  />
-                </Grid>
+                <Grid container justify="center" spacing={2}>
+                  <Grid item xs={8.5}>
+                    <Orders orders={orders} pages={4} />
+                  </Grid>
+                  <Grid item xs={3.5}>
+                    <VendorCard
+                      data={vendorData}
+                      isEditable={true}
+                      updateFunction={updateVendor}
+                      openAsVendor={false}
+                    />
+                  </Grid>
                 </Grid>
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
