@@ -71,7 +71,7 @@ const vendorPage = () => {
         type: "POST",
         header: {
           "Content-type": "application/json",
-          authtoken: Cookies.get("vendor token")
+          authorization: Cookies.get("vendor token")
             ? Cookies.get("vendor token")
             : "",
         },
@@ -92,7 +92,7 @@ const vendorPage = () => {
         type: "POST",
         header: {
           "Content-type": "application/json",
-          authtoken: Cookies.get("vendor token")
+          authorization: Cookies.get("vendor token")
             ? Cookies.get("vendor token")
             : "",
         },

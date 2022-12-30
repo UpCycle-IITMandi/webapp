@@ -22,7 +22,7 @@ function OrderCard(props) {
       type: "POST",
       header: {
         "Content-type": "application/json",
-        authtoken: Cookies.get("vendor token")
+        authorization: Cookies.get("vendor token")
           ? Cookies.get("vendor token")
           : Cookies.get("super user token")
       },
