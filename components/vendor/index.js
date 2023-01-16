@@ -89,7 +89,7 @@ const vendorPage = () => {
     const getOrders = async () => {
       var response = await Fetch({
         route: "/api/v1/order/getAll",
-        type: "POST",
+        type: "GET",
         header: {
           "Content-type": "application/json",
           authorization: Cookies.get("vendor token")
