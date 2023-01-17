@@ -475,7 +475,7 @@ function VendorMenu(props) {
               <DataGrid
                 autoHeight
                 columnVisibilityModel={{
-                  __HIDDEN__: false,
+                  // __HIDDEN__: false,
                   editMobile: isMobile, // visible if mobile
                   description: !isMobile, // invisible if mobile
                   inStock: !isMobile,

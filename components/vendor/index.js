@@ -82,6 +82,7 @@ const vendorPage = () => {
       if (!response.success) {
         Router.push("/vendor/" + vendorId + "/login");
       } else {
+        console.log("getVendor");
         setLoading(true);
         setVendorData(response.vendors);
       }
@@ -89,7 +90,6 @@ const vendorPage = () => {
     const getOrders = async () => {
       var response = await Fetch({
         route: "/api/v1/order/getAll",
-        type: "GET",
         header: {
           "Content-type": "application/json",
           authorization: Cookies.get("vendor token")
@@ -97,10 +97,11 @@ const vendorPage = () => {
             : "",
         },
       });
-      console.log(response);
       if (!response.success) {
+        console.log("getOrders", response);
         Router.push("/vendor/" + vendorId + "/login");
       } else {
+        console.log("getOrders");
         setLoading(true);
         setOrders(response.orders);
       }
